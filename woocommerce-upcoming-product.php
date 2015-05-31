@@ -2,7 +2,7 @@
 /*
 Plugin Name: Woocommerce upcoming Products
 Plugin URI: http://shaikat.me/
-Description: Manage your upcoming product easily. add label, short by upcoming on shop page and set available date to product.
+Description: Manage your upcoming product easily. add label, short by upcoming on shop page and set product available date.
 Version: 0.1
 Author: Sk Shaikat
 Author URI: http://shaikat.me/
@@ -61,6 +61,8 @@ class Woocommerce_Upcoming_Product {
         
         // custom preorder search queary
         add_action( 'woocommerce_product_query', array( $this, 'upcoming_custom_queary'), 2 );
+
+        add_filter( 'woocommerce_get_availability', array( $this, 'custom_get_availability' ), 1, 2 );
 
         // pre order single product view
         add_action( 'woocommerce_single_product_summary', array( $this, 'upcoming_single_page_view'), 40 );
@@ -145,6 +147,13 @@ class Woocommerce_Upcoming_Product {
         $_available_on = ( isset( $_POST['_available_on'] ) ) ? $_POST['_available_on'] : 'Date not set';
         update_post_meta( $post_id, '_upcoming', $_upcoming );
         update_post_meta( $post_id, '_available_on', $_available_on );
+        if ($_upcoming != '' ) {
+            update_post_meta( $post_id, '_stock_status', 'outofstock' );
+        } else {
+            if ( empty( $_POST['_manage_stock'] ) ) {
+                update_post_meta( $post_id, '_stock_status', 'instock' );
+            }
+        }
     }
 
     
@@ -175,6 +184,12 @@ class Woocommerce_Upcoming_Product {
             $q->set( 'meta_query', $meta_query );
         }
     }
+
+    // Our hooked in function $availablity is passed via the filter!
+    function custom_get_availability( $availability, $_product ) {
+    if ( !$_product->is_in_stock() ) $availability['availability'] = __('Coming Soon', 'woocommerce');
+    return $availability;
+    } 
 
     function upcoming_single_page_view() {
         global $post;

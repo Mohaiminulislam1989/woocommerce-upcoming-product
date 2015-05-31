@@ -8,11 +8,11 @@ Stable tag: woo-hunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Manage your upcoming product easily. add label, short by upcoming on shop page and set available date to product.
+Manage your upcoming product easily. add label, short by upcoming on shop page and set product available date.
 
 == Description ==
 
-Manage your upcoming product easily. add label, short by upcoming on shop page and set available date to product.
+Manage your upcoming product easily. add label, short by upcoming on shop page and set product available date.
 
 
 = More info =
