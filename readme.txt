@@ -8,11 +8,21 @@ Stable tag: woo-hunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Manage your upcoming product easily. add label, short by upcoming on shop page and set product available date.
+Manage your upcoming product easily. 
+
+# Add Upcomming label
+# Remove add to cart button for upcoming product
+# Short by upcoming on shop page
+# Set product available date
 
 == Description ==
 
-Manage your upcoming product easily. add label, short by upcoming on shop page and set product available date.
+Manage your upcoming product easily. 
+
+# Add Upcomming label
+# Remove add to cart button for upcoming product
+# Short by upcoming on shop page
+# Set product available date
 
 
 = More info =
@@ -28,7 +38,7 @@ P.S: Don't be worry, I always reply. :)
 
 1. Upload this plugin to the /wp-content/plugins/ directory.
 2. Activate the plugin through the Plugins menu in WordPress.
-3. Set your products upcoming date.
+3. Set your products upcoming date from product add/edit option.
 
 and Enjoy... :)
 
