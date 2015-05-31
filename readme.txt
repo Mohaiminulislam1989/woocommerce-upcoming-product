@@ -24,7 +24,6 @@ Twitter:  [@kharissulistiyo](https://twitter.com/SK_Shaikat)
 
 P.S: Don't be worry, I always reply. :)
 
-
 == Installation ==
 
 1. Upload this plugin to the /wp-content/plugins/ directory.
@@ -43,3 +42,11 @@ and Enjoy... :)
 
 = 1.0 =
 * Initial release
+
+== Upgrade Notice ==
+
+Update will come soon
+
+== Frequently Asked Questions ==
+
+Ask me at -> [sk.shaikat18(at)gmail(dot)com]
