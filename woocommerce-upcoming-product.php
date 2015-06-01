@@ -3,7 +3,7 @@
 Plugin Name: Woocommerce upcoming Products
 Plugin URI: http://shaikat.me/
 Description: Manage your upcoming product easily. add upcoming label, remove add to cart button for the product, short by upcoming on shop page and set product available date.
-Version: 0.1
+Version: 1.0
 Author: Sk Shaikat
 Author URI: http://shaikat.me/
 License: GPL2

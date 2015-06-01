@@ -10,19 +10,19 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Manage your upcoming product easily. 
 
-# Add Upcomming label
-# Remove add to cart button for upcoming product
-# Short by upcoming on shop page
-# Set product available date
+* Add Upcomming label
+* Remove add to cart button for upcoming product
+* Short by upcoming on shop page
+* Set product available date
 
 == Description ==
 
 Manage your upcoming product easily. 
 
-# Add Upcomming label
-# Remove add to cart button for upcoming product
-# Short by upcoming on shop page
-# Set product available date
+* Add Upcomming label
+* Remove add to cart button for upcoming product
+* Short by upcoming on shop page
+* Set product available date
 
 
 = More info =
@@ -30,7 +30,7 @@ Manage your upcoming product easily.
 Send me your question to my contacts below:
 
 Mail: [sk.shaikat18(at)gmail(dot)com](mailto:sk.shaikat18@gmail.com)
-Twitter:  [@kharissulistiyo](https://twitter.com/SK_Shaikat)
+Twitter:  [@Sk_Shaikat](https://twitter.com/SK_Shaikat)
 
 P.S: Don't be worry, I always reply. :)
 
