@@ -3,7 +3,7 @@
 Plugin Name: Woocommerce upcoming Products
 Plugin URI: http://shaikat.me/
 Description: Manage your upcoming product easily. add upcoming label, remove add to cart button for the product, short by upcoming on shop page and set product available date.
-Version: 1.0
+Version: 1.1
 Author: Sk Shaikat
 Author URI: http://shaikat.me/
 License: GPL2
@@ -66,6 +66,10 @@ class Woocommerce_Upcoming_Product {
 
         // pre order single product view
         add_action( 'woocommerce_single_product_summary', array( $this, 'upcoming_single_page_view'), 40 );
+
+        add_filter( 'woocommerce_get_sections_products', array( $this, 'wup_wc_product_settings_section' ), 10 );
+
+        add_filter( 'woocommerce_get_settings_products', array( $this, 'wup_wc_product_settings_option' ), 10, 2 );
 
     }
 
@@ -158,9 +162,12 @@ class Woocommerce_Upcoming_Product {
 
     
     function upcoming_product_title( $title, $id ){
+        $label = WC_Admin_Settings::get_option( 'wup_title_label_txt', 'wup' );
         $_upcoming = get_post_meta( $id, '_upcoming', true );
-        if( $_upcoming == 'yes') {
-            $title .= ' (Upcoming)';
+        if ( WC_Admin_Settings::get_option( 'wup_title_label', 'wup' ) == 'yes' ) {
+            if ( $_upcoming == 'yes' ) {
+                $title .= ' (' . $label . ')';
+            }
         }
         return $title;
     }
@@ -187,7 +194,7 @@ class Woocommerce_Upcoming_Product {
 
     // Our hooked in function $availablity is passed via the filter!
     function custom_get_availability( $availability, $_product ) {
-    if ( !$_product->is_in_stock() ) $availability['availability'] = __('Coming Soon', 'woocommerce');
+    if ( !$_product->is_in_stock() ) $availability['availability'] = __('Coming Soon', 'wup');
     return $availability;
     } 
 
@@ -212,6 +219,46 @@ class Woocommerce_Upcoming_Product {
             </div>
     <?php
         }
+    }
+
+    function wup_wc_product_settings_section( $sections ) {
+        $sections['wup']  = __( 'Upcoming Products', 'wup' );
+        return $sections;
+    }
+
+    function wup_wc_product_settings_option( $settings, $current_section ) {
+        if ( 'wup' == $current_section ) {
+            $settings = apply_filters( 'wup_product_settings', array(
+                array(
+                    'title' => __( 'Upcoming Product', 'wup' ),
+                    'type'  => 'title',
+                    'desc'  => '',
+                    'id'    => 'wup_options'
+                ),
+
+                array(
+                    'title'   => __( 'Upcoming Product label', 'wup' ),
+                    'desc'    => __( 'Allow for showing upcoming product title label', 'wup' ),
+                    'id'      => 'wup_title_label',
+                    'default' => 'yes',
+                    'type'    => 'checkbox'
+                ),
+
+                array(
+                    'title'   => __( 'Upcoming Product label text', 'wup' ),
+                    'desc'    => __( 'Product label on upcoming product title', 'wup' ),
+                    'id'      => 'wup_title_label_txt',
+                    'default' => 'Upcoming',
+                    'type'    => 'text'
+                ),
+
+                array(
+                    'type'  => 'sectionend',
+                    'id'    => 'wup_options'
+                ),
+            ) );
+        }
+        return $settings;
     }
 
 } // Woocommerce_Upcoming_Product
