@@ -45,6 +45,12 @@ and Enjoy... :)
 
 == Changelog ==
 
+= 1.2 =
+* [new] Add option to edit/remove 'Coming Soon' text under product price
+* [fix] Edit some function name to more meaningful
+* [tweak] change a screenshot for understand settings feature
+* [tweak] Edit readme text
+
 = 1.1 =
 * [new] Add Upcoming product settings options on back-end
 * [new] Add option to hide "upcoming" label from title

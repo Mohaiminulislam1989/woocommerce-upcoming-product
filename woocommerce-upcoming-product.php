@@ -49,9 +49,9 @@ class Woocommerce_Upcoming_Product {
 
 
         // Add Discount and sales price optin in backend for addmin
-        add_action( 'woocommerce_product_options_pricing', array( $this, 'add_upcoming_optins' ),10 );
-        add_action( 'woocommerce_process_product_meta_simple', array( $this, 'save_upcoming_optins' ),10 );
-        add_action( 'woocommerce_process_product_meta_variable', array( $this, 'save_upcoming_optins' ),10 );
+        add_action( 'woocommerce_product_options_pricing', array( $this, 'add_upcoming_options' ),10 );
+        add_action( 'woocommerce_process_product_meta_simple', array( $this, 'save_upcoming_options' ),10 );
+        add_action( 'woocommerce_process_product_meta_variable', array( $this, 'save_upcoming_options' ),10 );
 
         // image ribbon
         add_filter( 'the_title', array( $this, 'upcoming_product_title' ), 2, 10 );
@@ -138,7 +138,7 @@ class Woocommerce_Upcoming_Product {
 
     }
 
-    function add_upcoming_optins() {
+    function add_upcoming_options() {
         global $post;
         woocommerce_wp_checkbox( array( 'id' => '_upcoming', 'label' => __( 'Upcoming Product', 'woocommerce' ), 'description' => __( 'Enable for upcoming product', 'woocommerce' ) ) );
         $available_class = ( get_post_meta( $post->ID, '_upcoming', true ) == 'yes' ) ? '' : 'wup-hide';
@@ -146,7 +146,7 @@ class Woocommerce_Upcoming_Product {
         
     }
 
-    function save_upcoming_optins( $post_id  ) {
+    function save_upcoming_options( $post_id  ) {
         $_upcoming = ( isset( $_POST['_upcoming'] ) ) ? $_POST['_upcoming'] : '';
         $_available_on = ( isset( $_POST['_available_on'] ) ) ? $_POST['_available_on'] : 'Date not set';
         update_post_meta( $post_id, '_upcoming', $_upcoming );
@@ -194,8 +194,9 @@ class Woocommerce_Upcoming_Product {
 
     // Our hooked in function $availablity is passed via the filter!
     function custom_get_availability( $availability, $_product ) {
-    if ( !$_product->is_in_stock() ) $availability['availability'] = __('Coming Soon', 'wup');
-    return $availability;
+        $button_label = WC_Admin_Settings::get_option( 'wup_button_label_txt', 'wup' );
+        if ( !$_product->is_in_stock() ) $availability['availability'] = $button_label;
+        return $availability;
     } 
 
     function upcoming_single_page_view() {
@@ -245,10 +246,18 @@ class Woocommerce_Upcoming_Product {
                 ),
 
                 array(
-                    'title'   => __( 'Upcoming Product label text', 'wup' ),
+                    'title'   => __( 'Upcoming Product label Text', 'wup' ),
                     'desc'    => __( 'Product label on upcoming product title', 'wup' ),
                     'id'      => 'wup_title_label_txt',
                     'default' => 'Upcoming',
+                    'type'    => 'text'
+                ),
+
+                array(
+                    'title'   => __( 'Text Under Price', 'wup' ),
+                    'desc'    => __( 'Text under product price rather than button', 'wup' ),
+                    'id'      => 'wup_button_label_txt',
+                    'default' => 'Coming Soon',
                     'type'    => 'text'
                 ),
 
