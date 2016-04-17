@@ -158,22 +158,22 @@ class Woocommerce_Upcoming_Product {
 
     function add_upcoming_options() {
         global $post;
-        woocommerce_wp_checkbox( array( 'id' => '_upcoming', 'label' => __( 'Upcoming Product', 'woocommerce' ), 'description' => __( 'Enable for upcoming product', 'woocommerce' ) ) );
+        woocommerce_wp_checkbox( array( 'id' => '_upcoming', 'label' => __( 'Upcoming Product', 'wup' ), 'description' => __( 'Enable for upcoming product', 'wup' ) ) );
         $available_class = ( get_post_meta( $post->ID, '_upcoming', true ) == 'yes' ) ? '' : 'wup-hide';
-        woocommerce_wp_text_input( array( 'id' => '_available_on', 'label' => __( 'Available On', 'woocommerce' ), 'wrapper_class' => $available_class, 'description' => __( 'Insert product available date', 'woocommerce' ) ) );
+        woocommerce_wp_text_input( array( 'id' => '_available_on', 'label' => __( 'Available On', 'wup' ), 'wrapper_class' => $available_class, 'description' => __( 'Insert product available date', 'wup' ) ) );
         
     }
 
     function save_upcoming_options( $post_id  ) {
         $_upcoming = ( isset( $_POST['_upcoming'] ) ) ? $_POST['_upcoming'] : '';
-        $_available_on = ( isset( $_POST['_available_on'] ) ) ? $_POST['_available_on'] : 'Date not set';
+        $_available_on = ( isset( $_POST['_available_on'] ) ) ? $_POST['_available_on'] : __( 'Date not set', 'wup' );
         update_post_meta( $post_id, '_upcoming', $_upcoming );
         update_post_meta( $post_id, '_available_on', $_available_on );
     }
 
     
     function upcoming_product_title( $title, $id ){
-        $label = WC_Admin_Settings::get_option( 'wup_title_label_txt', 'Upcoming' );
+        $label = WC_Admin_Settings::get_option( 'wup_title_label_txt', __( 'Upcoming', 'wup' ) );
         $_upcoming = get_post_meta( $id, '_upcoming', true );
         if ( WC_Admin_Settings::get_option( 'wup_title_label', 'yes' ) == 'yes' ) {
             if ( $_upcoming == 'yes' ) {
@@ -205,7 +205,7 @@ class Woocommerce_Upcoming_Product {
 
     // Our hooked in function $availablity is passed via the filter!
     function custom_get_availability() {
-        $price_label = WC_Admin_Settings::get_option( 'wup_price_label_txt', 'Coming Soon' );
+        $price_label = WC_Admin_Settings::get_option( 'wup_price_label_txt', __( 'Coming Soon', 'wup' ) );
         if ( WC_Admin_Settings::get_option( 'wup_price_label', 'yes' ) == 'yes' ) {
             echo '<div class="product_meta"><span class="wup-price-label">' . $price_label . '</span></div>';
         }
