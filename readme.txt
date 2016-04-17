@@ -15,9 +15,11 @@ Manage your upcoming product easily in WooCommerce.
 Manage your upcoming product easily. 
 
 * Manage Upcoming label
-* Remove add to cart button for upcoming product
+* Hide / Show add to cart button for upcoming product
+* Hide / Show Upcoming product price
 * Short by upcoming on shop page
 * Set product available date
+* Show / Hide Available date
 
 
 = More info =
@@ -44,6 +46,16 @@ and Enjoy... :)
 4. Upcoming product search option on shop page
 
 == Change log ==
+
+= 1.3 =
+* [new] Add Show / Hide option for available date both single and shop page
+* [new] Add Show / Hide option for price on single page
+* [new] Add Show / Hide option for "add to cart" button on single page
+* [tweak] Add option to hide title label
+* [fix] Some style issue and most of support issue fixed
+* [fix] Remove auto manage stock
+* [fix] Auto change "out of stock" text to "coming soon"
+* [tweak] Update donation link on readme.text
 
 = 1.2 =
 * [new] Add option to edit/remove 'Coming Soon' text under product price

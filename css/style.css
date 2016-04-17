@@ -1,3 +1,6 @@
 .wup-hide {
 	display: none;
 }
+.product_meta .available-from, .product_meta .wup-price-label {
+	color: #f00;
+}
