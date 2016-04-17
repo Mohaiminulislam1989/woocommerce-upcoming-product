@@ -66,6 +66,7 @@ class Woocommerce_Upcoming_Product {
 
         // pre order single product view
         add_action( 'woocommerce_single_product_summary', array( $this, 'upcoming_single_page_view'), 40 );
+        // add_action( 'woocommerce_after_shop_loop_item', array( $this, 'upcoming_shop_page_view'), 7 );
 
         add_filter( 'woocommerce_get_sections_products', array( $this, 'wup_wc_product_settings_section' ), 10 );
 
@@ -162,9 +163,9 @@ class Woocommerce_Upcoming_Product {
 
     
     function upcoming_product_title( $title, $id ){
-        $label = WC_Admin_Settings::get_option( 'wup_title_label_txt', 'wup' );
+        $label = WC_Admin_Settings::get_option( 'wup_title_label_txt', 'Upcoming' );
         $_upcoming = get_post_meta( $id, '_upcoming', true );
-        if ( WC_Admin_Settings::get_option( 'wup_title_label', 'wup' ) == 'yes' ) {
+        if ( WC_Admin_Settings::get_option( 'wup_title_label', 'yes' ) == 'yes' ) {
             if ( $_upcoming == 'yes' ) {
                 $title .= ' (' . $label . ')';
             }
@@ -194,7 +195,7 @@ class Woocommerce_Upcoming_Product {
 
     // Our hooked in function $availablity is passed via the filter!
     function custom_get_availability( $availability, $_product ) {
-        $button_label = WC_Admin_Settings::get_option( 'wup_button_label_txt', 'wup' );
+        $button_label = WC_Admin_Settings::get_option( 'wup_button_label_txt', 'Coming Soon' );
         if ( !$_product->is_in_stock() ) $availability['availability'] = $button_label;
         return $availability;
     } 
@@ -217,6 +218,27 @@ class Woocommerce_Upcoming_Product {
                 }
                 ?>
                 </span>
+            </div>
+    <?php
+        }
+    }
+
+    function upcoming_shop_page_view() {
+        global $post;
+        $_upcoming = get_post_meta( $post->ID, '_upcoming', true );
+        $_available_on = get_post_meta( $post->ID, '_available_on', true );
+        if( $_upcoming == 'yes') { ?>
+            <div class="upcoming">
+                <?php _e( 'Available from: ', 'wup' ); 
+                 
+                if( $_available_on == '' ) { ?>
+                    <strong><?php _e( 'Date not yet set.', 'wup' ); ?></strong>
+                <?php
+                }else { ?>
+                    <strong><?php echo $_available_on; ?></strong>
+                <?php
+                }
+                ?>
             </div>
     <?php
         }

@@ -10,5 +10,6 @@
 	});
 
 	$('#_available_on').datepicker();
+	$('#_available_on').datepicker('option', 'dateFormat', 'dd/mm/yy');
 
 })(jQuery);
