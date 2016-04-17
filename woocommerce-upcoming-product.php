@@ -3,9 +3,9 @@
 Plugin Name: Woocommerce upcoming Products
 Plugin URI: http://shaikat.me/
 Description: Manage your upcoming product easily. add upcoming label, remove add to cart button for the product, short by upcoming on shop page and set product available date.
-Version: 1.2
+Version: 1.3
 Author: Sk Shaikat
-Author URI: http://shaikat.me/
+Author URI: https://twitter.com/SK_Shaikat
 License: GPL2
 */
 
@@ -152,13 +152,13 @@ class Woocommerce_Upcoming_Product {
         $_available_on = ( isset( $_POST['_available_on'] ) ) ? $_POST['_available_on'] : 'Date not set';
         update_post_meta( $post_id, '_upcoming', $_upcoming );
         update_post_meta( $post_id, '_available_on', $_available_on );
-        if ($_upcoming != '' ) {
-            update_post_meta( $post_id, '_stock_status', 'outofstock' );
-        } else {
-            if ( empty( $_POST['_manage_stock'] ) ) {
-                update_post_meta( $post_id, '_stock_status', 'instock' );
-            }
-        }
+        // if ($_upcoming != '' ) {
+        //     update_post_meta( $post_id, '_stock_status', 'outofstock' );
+        // } else {
+        //     if ( empty( $_POST['_manage_stock'] ) ) {
+        //         update_post_meta( $post_id, '_stock_status', 'instock' );
+        //     }
+        // }
     }
 
     
