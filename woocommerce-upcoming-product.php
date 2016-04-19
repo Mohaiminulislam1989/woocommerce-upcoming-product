@@ -177,7 +177,7 @@ class Woocommerce_Upcoming_Product {
         $_upcoming = get_post_meta( $id, '_upcoming', true );
         if ( WC_Admin_Settings::get_option( 'wup_title_label', 'yes' ) == 'yes' ) {
             if ( $_upcoming == 'yes' ) {
-                $title .= ' (' . $label . ')';
+                $title .= ' <span class="soon">(' . $label . ')</span>';
             }
         }
         return $title;
