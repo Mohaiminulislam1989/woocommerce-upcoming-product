@@ -1,0 +1,152 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Woocommerce upcoming Products\n"
+"POT-Creation-Date: 2016-05-13 10:38+0200\n"
+"PO-Revision-Date: 2016-05-13 10:41+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: nl_NL\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.7\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-WPHeader: woocommerce-upcoming-product.php\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;"
+"_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: woocommerce-upcoming-product.php:161 woocommerce-upcoming-product.php:271
+msgid "Upcoming Product"
+msgstr "Item wordt verwacht"
+
+#: woocommerce-upcoming-product.php:161
+msgid "Enable for upcoming product"
+msgstr "Inschakelen voor aanstaande product"
+
+#: woocommerce-upcoming-product.php:163
+msgid "Available On"
+msgstr "Beschikbaar op"
+
+#: woocommerce-upcoming-product.php:163
+msgid "Insert product available date"
+msgstr ""
+
+#: woocommerce-upcoming-product.php:169
+msgid "Date not set"
+msgstr ""
+
+#: woocommerce-upcoming-product.php:176
+msgid "Upcoming"
+msgstr "Wordt verwacht"
+
+#: woocommerce-upcoming-product.php:187
+msgid "Sort by upcoming"
+msgstr ""
+
+#: woocommerce-upcoming-product.php:208
+msgid "Coming Soon"
+msgstr "Binnenkort verwacht"
+
+#: woocommerce-upcoming-product.php:222 woocommerce-upcoming-product.php:246
+msgid "Available from: "
+msgstr "Beschikbaar vanaf:"
+
+#: woocommerce-upcoming-product.php:225 woocommerce-upcoming-product.php:249
+msgid "Date not yet set."
+msgstr ""
+
+#: woocommerce-upcoming-product.php:263
+msgid "Upcoming Products"
+msgstr ""
+
+#: woocommerce-upcoming-product.php:278
+msgid "Upcoming Product title label"
+msgstr ""
+
+#: woocommerce-upcoming-product.php:279
+msgid "Show label on upcoming product title"
+msgstr ""
+
+#: woocommerce-upcoming-product.php:286
+msgid "Title label Text"
+msgstr ""
+
+#: woocommerce-upcoming-product.php:287
+msgid "Label will show on upcoming product title"
+msgstr ""
+
+#: woocommerce-upcoming-product.php:294
+msgid "Price Hide on Single Page"
+msgstr ""
+
+#: woocommerce-upcoming-product.php:295
+msgid "Hide price of upcoming product on single product page"
+msgstr ""
+
+#: woocommerce-upcoming-product.php:310
+msgid "Upcoming Product price label"
+msgstr ""
+
+#: woocommerce-upcoming-product.php:311
+msgid "Show label under price of upcoming product"
+msgstr ""
+
+#: woocommerce-upcoming-product.php:318
+msgid "Text Under Price"
+msgstr ""
+
+#: woocommerce-upcoming-product.php:319
+msgid "Text under product price"
+msgstr ""
+
+#: woocommerce-upcoming-product.php:326
+msgid "\"Add to Cart\" Button Hide on Single Page"
+msgstr ""
+
+#: woocommerce-upcoming-product.php:327
+msgid "Hide \"Add to Cart\" Button of upcoming product on single product page"
+msgstr ""
+
+#: woocommerce-upcoming-product.php:342
+msgid "Available Date Show on Single Page"
+msgstr ""
+
+#: woocommerce-upcoming-product.php:343
+msgid "Show available date on single product page view"
+msgstr ""
+
+#: woocommerce-upcoming-product.php:350
+msgid "Available Date Show on Shop Page"
+msgstr ""
+
+#: woocommerce-upcoming-product.php:351
+msgid "Show available date on shop product page view"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "Woocommerce upcoming Products"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "http://shaikat.me/"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"Manage your upcoming product easily. add upcoming label, remove add to cart "
+"button for the product, short by upcoming on shop page and set product "
+"available date."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Sk Shaikat"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "https://twitter.com/SK_Shaikat"
+msgstr ""
