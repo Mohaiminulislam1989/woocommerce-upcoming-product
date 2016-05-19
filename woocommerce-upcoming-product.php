@@ -45,7 +45,7 @@ class Woocommerce_Upcoming_Product
         add_action( 'init', array($this,'localization_setup' ) );
 
         // Loads frontend scripts and styles
-        add_action( 'admin_enqueue_scripts', array($this,'enqueue_scripts' ) );
+        add_action( 'admin_enqueue_scripts', array($this,'admin_enqueue_scripts' ) );
         add_action( 'wp_enqueue_scripts', array($this,'enqueue_scripts' ) );
 
 
@@ -141,11 +141,15 @@ class Woocommerce_Upcoming_Product
         * All styles goes here
         */
         wp_enqueue_style( 'upcoming-styles', plugins_url( 'css/style.css', __FILE__ ), false, date( 'Ymd' ) );
+
+    }
+
+    public function admin_enqueue_scripts() {
+
         /**
         * All scripts goes here
         */
         wp_enqueue_script( 'upcoming-scripts', plugins_url( 'js/script.js', __FILE__ ), array('jquery' ), false, true );
-
     }
 
     function wup_play_ground()
@@ -244,11 +248,9 @@ class Woocommerce_Upcoming_Product
                             </strong>
                             <?php
                         }else {
-                            $dateformatstring = "l d F, Y";
-                            $unixtimestamp    = strtotime($_available_on);
                             ?>
                             <strong>
-                                <?php echo date_i18n($dateformatstring, $unixtimestamp) ; ?>
+                                <?php echo date_i18n(get_option( 'date_format' ), strtotime($_available_on)) ; ?>
                             </strong>
                             <?php
                         }
@@ -282,7 +284,7 @@ class Woocommerce_Upcoming_Product
                         $unixtimestamp    = strtotime($_available_on);
                         ?>
                         <strong>
-                            <?php echo date_i18n($dateformatstring, $unixtimestamp) ; ?>
+                            <?php echo date_i18n(get_option( 'date_format' ), strtotime($_available_on)) ; ?>
                         </strong>
                         <?php
                     }
