@@ -3,8 +3,8 @@ Contributors: sk.shaikat
 Tags: WooCommerce upcoming product, upcoming product, e-commerce, coming soon product, commerce, WooCommerce, extension, product, new product
 Donate link: https://www.paypal.me/skshaikat
 Requires at least: 3.1
-Tested up to: 4.5
-Stable tag: 1.3
+Tested up to: 4.5.2
+Stable tag: 1.3.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -46,6 +46,12 @@ and Enjoy... :)
 4. Upcoming product search option on shop page
 
 == Change log ==
+
+= 1.3.1 =
+* [new] Add available time formate to default WordPress time format
+* [tweak] Add language file for dutch
+* [fix] Fix warning date picker is not a function
+* [tweak] Update donation link on readme.text
 
 = 1.3 =
 * [new] Add Show / Hide option for available date both single and shop page
