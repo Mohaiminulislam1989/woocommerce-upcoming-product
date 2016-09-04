@@ -3,7 +3,7 @@ Contributors: sk.shaikat
 Tags: WooCommerce upcoming product, upcoming product, e-commerce, coming soon product, commerce, WooCommerce, extension, product, new product
 Donate link: https://www.paypal.me/skshaikat
 Requires at least: 3.1
-Tested up to: 4.5.2
+Tested up to: 4.6
 Stable tag: 1.3.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -46,6 +46,10 @@ and Enjoy... :)
 4. Upcoming product search option on shop page
 
 == Change log ==
+
+= 1.3.2 =
+* [fix] Fix Show all product coming soon
+* [fix] Fix not showing price
 
 = 1.3.1 =
 * [new] Add available time formate to default WordPress time format

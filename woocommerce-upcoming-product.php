@@ -3,7 +3,7 @@
 Plugin Name: Woocommerce upcoming Products
 Plugin URI: http://shaikat.me/
 Description: Manage your upcoming product easily. add upcoming label, remove add to cart button for the product, short by upcoming on shop page and set product available date.
-Version: 1.3.1
+Version: 1.3.2
 Author: Sk Shaikat
 Author URI: https://twitter.com/SK_Shaikat
 License: GPL2
@@ -50,7 +50,7 @@ class Woocommerce_Upcoming_Product
 
 
         // wup let's play option
-        add_action( 'woocommerce_loaded', array($this,'wup_play_ground' ) );
+        add_action( 'template_redirect', array($this,'wup_play_ground' ) );
 
         // Add Discount and sales price optin in backend for addmin
         add_action( 'woocommerce_product_options_pricing', array($this,'add_upcoming_options' ),10 );
@@ -152,20 +152,31 @@ class Woocommerce_Upcoming_Product
         wp_enqueue_script( 'upcoming-scripts', plugins_url( 'js/script.js', __FILE__ ), array('jquery' ), false, true );
     }
 
+    function is_upcoming() {
+        global $post;
+        if ( get_post_meta( $post->id, '_upcoming', true ) == 'yes' ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     function wup_play_ground()
     {
-        if ( WC_Admin_Settings::get_option( 'wup_price_hide_single', 'no' ) == 'yes' ) {
-            remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_price', 10 );
+        if ( $this->is_upcoming() ) {
+            if ( WC_Admin_Settings::get_option( 'wup_price_hide_single', 'no' ) == 'yes' ) {
+                remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_price', 10 );
+            }
+            // if ( WC_Admin_Settings::get_option( 'wup_price_hide_shop', 'no' ) == 'yes' ) {
+            //     remove_action( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price', 10 );
+            // }
+            if ( WC_Admin_Settings::get_option( 'wup_button_hide_single', 'no' ) == 'yes' ) {
+                remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_add_to_cart', 30 );
+            }
+            // if ( WC_Admin_Settings::get_option( 'wup_button_hide_shop', 'no' ) == 'yes' ) {
+            //     remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10 );
+            // }
         }
-        // if ( WC_Admin_Settings::get_option( 'wup_price_hide_shop', 'no' ) == 'yes' ) {
-        //     remove_action( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price', 10 );
-        // }
-        if ( WC_Admin_Settings::get_option( 'wup_button_hide_single', 'no' ) == 'yes' ) {
-            remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_add_to_cart', 30 );
-        }
-        // if ( WC_Admin_Settings::get_option( 'wup_button_hide_shop', 'no' ) == 'yes' ) {
-        //     remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10 );
-        // }
     }
 
     function add_upcoming_options()
@@ -189,11 +200,8 @@ class Woocommerce_Upcoming_Product
     function upcoming_product_title( $title, $id )
     {
         $label     = WC_Admin_Settings::get_option( 'wup_title_label_txt', __( 'Upcoming', 'wup' ) );
-        $_upcoming = get_post_meta( $id, '_upcoming', true );
-        if ( WC_Admin_Settings::get_option( 'wup_title_label', 'yes' ) == 'yes' ) {
-            if ( $_upcoming == 'yes' ) {
-                $title .= ' <span class="soon">(' . $label . ')</span>';
-            }
+        if ( $this->is_upcoming() && WC_Admin_Settings::get_option( 'wup_title_label', 'yes' ) == 'yes' ) {
+            $title .= ' <span class="soon">(' . $label . ')</span>';
         }
         return $title;
     }
@@ -224,7 +232,7 @@ class Woocommerce_Upcoming_Product
     function custom_get_availability()
     {
         $price_label = WC_Admin_Settings::get_option( 'wup_price_label_txt', __( 'Coming Soon', 'wup' ) );
-        if ( WC_Admin_Settings::get_option( 'wup_price_label', 'yes' ) == 'yes' ) {
+        if ( $this->is_upcoming() && WC_Admin_Settings::get_option( 'wup_price_label', 'yes' ) == 'yes' ) {
             echo '<div class="product_meta"><span class="wup-price-label">' . $price_label . '</span></div>';
         }
     }
@@ -233,9 +241,8 @@ class Woocommerce_Upcoming_Product
     {
         global $post;
         if ( WC_Admin_Settings::get_option( 'wup_show_available_date_single', 'yes' ) == 'yes' ) {
-            $_upcoming = get_post_meta( $post->ID, '_upcoming', true );
             $_available_on = get_post_meta( $post->ID, '_available_on', true );
-            if ( $_upcoming == 'yes') {
+            if ( $this->is_upcoming() ) {
                 ?>
                 <div class="product_meta">
                     <span class="available-from">
@@ -266,9 +273,8 @@ class Woocommerce_Upcoming_Product
     {
         global $post;
         if ( WC_Admin_Settings::get_option( 'wup_show_available_date_shop', 'yes' ) == 'yes' ) {
-            $_upcoming = get_post_meta( $post->ID, '_upcoming', true );
             $_available_on = get_post_meta( $post->ID, '_available_on', true );
-            if ( $_upcoming == 'yes') {
+            if ( $this->is_upcoming() ) {
                 ?>
                 <div class="upcoming">
                     <?php _e( 'Available from: ', 'wup' );
