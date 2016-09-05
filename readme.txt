@@ -4,7 +4,7 @@ Tags: WooCommerce upcoming product, upcoming product, e-commerce, coming soon pr
 Donate link: https://www.paypal.me/skshaikat
 Requires at least: 3.1
 Tested up to: 4.6
-Stable tag: 1.3.2
+Stable tag: 1.3.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -46,6 +46,10 @@ and Enjoy... :)
 4. Upcoming product search option on shop page
 
 == Change log ==
+
+= 1.3.3 =
+* [fix] Fix product title show <span> tag on admin panel
+* [fix] Fix translation issue
 
 = 1.3.2 =
 * [new] Add Show / Hide option for price on shop page
