@@ -6,6 +6,8 @@ Description: Manage your upcoming product easily. add upcoming label, remove add
 Version: 1.3.2
 Author: Sk Shaikat
 Author URI: https://twitter.com/SK_Shaikat
+Text Domain: wup
+Domain Path: /languages
 License: GPL2
 */
 
