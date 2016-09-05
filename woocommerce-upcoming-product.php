@@ -50,7 +50,9 @@ class Woocommerce_Upcoming_Product
 
 
         // wup let's play option
-        add_action( 'template_redirect', array($this,'wup_play_ground' ) );
+        add_action( 'woocommerce_before_single_product', array($this,'wup_single_page_view' ) );
+        // wup let's play option
+        add_action( 'woocommerce_before_shop_loop_item', array($this,'wup_shop_page_view' ) );
 
         // Add Discount and sales price optin in backend for addmin
         add_action( 'woocommerce_product_options_pricing', array($this,'add_upcoming_options' ),10 );
@@ -154,28 +156,36 @@ class Woocommerce_Upcoming_Product
 
     function is_upcoming() {
         global $post;
-        if ( get_post_meta( $post->id, '_upcoming', true ) == 'yes' ) {
+        if ( get_post_meta( $post->ID, '_upcoming', true ) == 'yes' ) {
             return true;
         } else {
             return false;
         }
     }
 
-    function wup_play_ground()
+    function wup_single_page_view()
     {
         if ( $this->is_upcoming() ) {
             if ( WC_Admin_Settings::get_option( 'wup_price_hide_single', 'no' ) == 'yes' ) {
                 remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_price', 10 );
             }
-            // if ( WC_Admin_Settings::get_option( 'wup_price_hide_shop', 'no' ) == 'yes' ) {
-            //     remove_action( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price', 10 );
-            // }
             if ( WC_Admin_Settings::get_option( 'wup_button_hide_single', 'no' ) == 'yes' ) {
                 remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_add_to_cart', 30 );
             }
-            // if ( WC_Admin_Settings::get_option( 'wup_button_hide_shop', 'no' ) == 'yes' ) {
-            //     remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10 );
-            // }
+        }
+    }
+
+    function wup_shop_page_view()
+    {
+        if ( WC_Admin_Settings::get_option( 'wup_price_hide_shop', 'no' ) == 'yes' && $this->is_upcoming() ) {
+            remove_action( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price', 10 );
+        } else {
+            add_action( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price', 10 );
+        }
+        if ( WC_Admin_Settings::get_option( 'wup_button_hide_shop', 'no' ) == 'yes' && $this->is_upcoming() ) {
+            remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10 );
+        } else {
+            add_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10 );
         }
     }
 
@@ -342,13 +352,13 @@ class Woocommerce_Upcoming_Product
                         'type'   => 'checkbox'
                     ),
 
-                    // array(
-                    //     'title'   => __( 'Price Hide on Shop Page', 'wup' ),
-                    //     'desc'    => __( 'Hide price of upcoming product on shop page', 'wup' ),
-                    //     'id'      => 'wup_price_hide_shop',
-                    //     'default' => 'no',
-                    //     'type'    => 'checkbox'
-                    // ),
+                    array(
+                        'title'   => __( 'Price Hide on Shop Page', 'wup' ),
+                        'desc'    => __( 'Hide price of upcoming product on shop page', 'wup' ),
+                        'id'      => 'wup_price_hide_shop',
+                        'default' => 'no',
+                        'type'    => 'checkbox'
+                    ),
 
                     array(
                         'title'  => __( 'Upcoming Product price label', 'wup' ),
@@ -374,13 +384,13 @@ class Woocommerce_Upcoming_Product
                         'type'   => 'checkbox'
                     ),
 
-                    // array(
-                    //     'title'   => __( '"Add to Cart" Button Hide on Shop Page', 'wup' ),
-                    //     'desc'    => __( 'Hide "Add to Cart" Button of upcoming product on shop page', 'wup' ),
-                    //     'id'      => 'wup_button_hide_shop',
-                    //     'default' => 'no',
-                    //     'type'    => 'checkbox'
-                    // ),
+                    array(
+                        'title'   => __( '"Add to Cart" Button Hide on Shop Page', 'wup' ),
+                        'desc'    => __( 'Hide "Add to Cart" Button of upcoming product on shop page', 'wup' ),
+                        'id'      => 'wup_button_hide_shop',
+                        'default' => 'no',
+                        'type'    => 'checkbox'
+                    ),
 
                     array(
                         'title'  => __( 'Available Date Show on Single Page', 'wup' ),
