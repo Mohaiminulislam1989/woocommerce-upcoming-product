@@ -215,7 +215,7 @@ class Woocommerce_Upcoming_Product
             return $title;
         }
         $label     = WC_Admin_Settings::get_option( 'wup_title_label_txt', __( 'Upcoming', 'wup' ) );
-        if ( $this->is_upcoming() && WC_Admin_Settings::get_option( 'wup_title_label', 'yes' ) == 'yes' ) {
+        if ( 'product' == get_post_type( $id ) && $this->is_upcoming() && WC_Admin_Settings::get_option( 'wup_title_label', 'yes' ) == 'yes' ) {
             $title .= ' <span class="soon">(' . $label . ')</span>';
         }
         return $title;
