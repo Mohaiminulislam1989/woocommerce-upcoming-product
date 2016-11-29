@@ -207,7 +207,7 @@ class Woocommerce_Upcoming_Product
     }
 
 
-    function upcoming_product_title( $title, $id )
+    function upcoming_product_title( $title, $id = null )
     {
         if ( is_admin() ) {
             return $title;
