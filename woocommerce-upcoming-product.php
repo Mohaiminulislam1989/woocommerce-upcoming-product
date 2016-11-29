@@ -179,15 +179,13 @@ class Woocommerce_Upcoming_Product
 
     function wup_shop_page_view()
     {
-        if ( WC_Admin_Settings::get_option( 'wup_price_hide_shop', 'no' ) == 'yes' && $this->is_upcoming() ) {
-            remove_action( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price', 10 );
-        } else {
-            add_action( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price', 10 );
-        }
-        if ( WC_Admin_Settings::get_option( 'wup_button_hide_shop', 'no' ) == 'yes' && $this->is_upcoming() ) {
-            remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10 );
-        } else {
-            add_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10 );
+        if ( $this->is_upcoming() ) {
+            if ( WC_Admin_Settings::get_option( 'wup_price_hide_shop', 'no' ) == 'yes' ) {
+                remove_action( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price', 10 );
+            }
+            if ( WC_Admin_Settings::get_option( 'wup_button_hide_shop', 'no' ) == 'yes' ) {
+                remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10 );
+            }
         }
     }
 
