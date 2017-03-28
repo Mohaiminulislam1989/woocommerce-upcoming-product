@@ -1,12 +1,12 @@
 ===  WooCommerce upcoming Products ===
 Contributors: sk.shaikat
-Tags: WooCommerce upcoming product, upcoming product, e-commerce, coming soon product, commerce, WooCommerce, extension, product, new product
+Tags: WooCommerce upcoming product, upcoming product, e-commerce, coming soon product, WooCommerce, extension, product, new product, dokan, wc-vendors, multivendor, marketplace, later product, stacked products, available from, offline products, advance product, processing product, advancement product, advertise product, advise product, pose product, pretend product, assert product, exert product, show off product, proclaim product, disseminate product, promulgate product, publish product, issue product, declare product, announce product, set forth product, set out product, notify product, advertising product, product on hold, onhold, onhold product, WC
 Donate link: https://www.paypal.me/skshaikat
 Requires at least: 3.1
-Tested up to: 4.6
-Stable tag: 1.3.3
+Tested up to: 4.7.3
+Stable tag: 1.5
 License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 Manage your upcoming product easily in WooCommerce.
 
@@ -20,6 +20,7 @@ Manage your upcoming product easily.
 * Short by upcoming on shop page
 * Set product available date
 * Show / Hide Available date
+* Auto restock and auto live product on available date
 
 
 = More info =
@@ -46,6 +47,20 @@ and Enjoy... :)
 4. Upcoming product search option on shop page
 
 == Change log ==
+
+= 1.5 =
+* [new] On available date Product will go online automatically with all data like stock, inventory
+* [new] Add admin style sheet
+* [tweak] Format all code
+
+= 1.4.1 =
+* [fix] datepicker is not a function error on javascript
+* [tweak] Update change log
+
+= 1.4 =
+* [new] Works with every type of products
+* [tweak] Update change log
+* [fix] Fix available date display issue
 
 = 1.3.3 =
 * [fix] Fix product title show <span> tag on admin panel
@@ -90,17 +105,18 @@ and Enjoy... :)
 = 1.0 =
 * Initial release
 
-== Upgrade Notice ==
-
-Update will come soon
-
 == Frequently Asked Questions ==
 
-Q: Does it supports all product type?
-A: Yes.
+* Q: Does it supports all product type?
+* A: Yes.
 
-Q: How to remove coming soon text on single product page?
-A: Remove your product price.
+* Q: Does this plugin support all theme?
+* A: Yes.
 
-Q: Does this plugin support all theme?
-Y: Yes.
+* Q: Does this plugin change products status upcoming to live on available date automatically?
+* A: Yes.
+
+* Q: Does this plugin auto restock product on available date?
+* A: Yes.
+
+*Please suggest me some feature and update will come soon.
