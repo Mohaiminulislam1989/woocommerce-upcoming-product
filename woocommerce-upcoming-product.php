@@ -3,7 +3,7 @@
 Plugin Name: Woocommerce upcoming Products
 Plugin URI: http://shaikat.me/
 Description: Manage your upcoming product easily. add upcoming label, remove add to cart button for the product, short by upcoming on shop page and set product available date.
-Version: 1.5
+Version: 1.5.1
 Author: Sk Shaikat
 Author URI: https://twitter.com/SK_Shaikat
 Text Domain: wup
@@ -57,7 +57,8 @@ class Woocommerce_Upcoming_Product
         add_action( 'woocommerce_before_shop_loop_item', array($this,'wup_shop_page_view' ) );
 
         // Add Discount and sales price optin in backend for addmin
-        add_action( 'woocommerce_product_options_general_product_data', array($this,'add_upcoming_options' ),10 );
+        // add_action( 'woocommerce_product_options_general_product_data', array($this,'add_upcoming_options' ),10 );
+        add_action( 'woocommerce_product_options_advanced', array($this,'add_upcoming_options' ),10 );
         add_action( 'woocommerce_process_product_meta_simple', array($this,'save_upcoming_options' ),10 );
         add_action( 'woocommerce_process_product_meta_variable', array($this,'save_upcoming_options' ),10 );
 

@@ -4,7 +4,7 @@ Tags: WooCommerce upcoming product, upcoming product, e-commerce, coming soon pr
 Donate link: https://www.paypal.me/skshaikat
 Requires at least: 3.1
 Tested up to: 4.7.3
-Stable tag: 1.5
+Stable tag: 1.5.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -47,6 +47,11 @@ and Enjoy... :)
 4. Upcoming product search option on shop page
 
 == Change log ==
+
+= 1.5.1 =
+* [new] Add compatibility to work with 'Grouped product' type product
+* [tweak] Move upcoming checkbox from 'General' tab to 'Advanced' tab in product edit page
+* [tweak] Update screenshot
 
 = 1.5 =
 * [new] On available date Product will go online automatically with all data like stock, inventory
