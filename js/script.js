@@ -9,6 +9,6 @@
 	    }
 	});
 
-	$('#_available_on').datepicker();
+	$('#_available_on').datepicker({ minDate: 0 });
 
 })(jQuery);

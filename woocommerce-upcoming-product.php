@@ -3,7 +3,7 @@
 Plugin Name: Woocommerce upcoming Products
 Plugin URI: http://shaikat.me/
 Description: Manage your upcoming product easily. add upcoming label, remove add to cart button for the product, short by upcoming on shop page and set product available date.
-Version: 1.5.1
+Version: 1.5.2
 Author: Sk Shaikat
 Author URI: https://twitter.com/SK_Shaikat
 Text Domain: wup
@@ -162,14 +162,15 @@ class Woocommerce_Upcoming_Product
      * @uses wp_enqueue_style
      */
     public function admin_enqueue_scripts() {
-
+        global $pagenow;
         /**
          * All scripts goes here
          */
-        if ( strstr($_SERVER['REQUEST_URI'], 'wp-admin/post.php') ) {
-            wp_enqueue_style( 'upcoming-styles', plugins_url( 'css/admin-style.css', __FILE__ ), false, date( 'Ymd' ) );
-            wp_enqueue_script( 'upcoming-scripts', plugins_url( 'js/script.js', __FILE__ ), array('jquery' ), false, true );
+        if ( !in_array( $pagenow, array( 'post.php', 'post-new.php') ) ) {
+            return;
         }
+        wp_enqueue_style( 'upcoming-styles', plugins_url( 'css/admin-style.css', __FILE__ ), false, date( 'Ymd' ) );
+        wp_enqueue_script( 'upcoming-scripts', plugins_url( 'js/script.js', __FILE__ ), array('jquery' ), false, true );
     }
 
     // /**
@@ -177,7 +178,7 @@ class Woocommerce_Upcoming_Product
     //  *
     //  * @since 1.5
     //  */
-    // function wup_delete_product_updoming_meta() {
+    // function wup_auto_delete_product_updoming_meta() {
     //     if ( $this->is_upcoming() && WC_Admin_Settings::get_option( 'wup_auto_live', 'yes' ) == 'yes' ) {
     //         $this->wup_delete_product_updoming_meta();
     //     }
