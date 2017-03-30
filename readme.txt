@@ -49,8 +49,6 @@ and Enjoy... :)
 == Change log ==
 
 = 1.5.3 =
-* [new] Relative path support added for language file
-* [tweak] Update Text Domain to 'woocommerce-upcoming-products' from 'wup' for better language support
 * [tweak] Set datepicker min-date to tomorrow date
 
 = 1.5.2 =
