@@ -4,7 +4,7 @@ Tags: WooCommerce upcoming product, upcoming product, e-commerce, coming soon pr
 Donate link: https://www.paypal.me/skshaikat
 Requires at least: 3.1
 Tested up to: 4.7.3
-Stable tag: 1.5.2
+Stable tag: 1.5.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -47,6 +47,11 @@ and Enjoy... :)
 4. Upcoming product search option on shop page
 
 == Change log ==
+
+= 1.5.3 =
+* [new] Relative path support added for language file
+* [tweak] Update Text Domain to 'woocommerce-upcoming-product' from 'wup' for better language support
+* [tweak] Set datepicker min-date to tomorrow date
 
 = 1.5.2 =
 * [fix] Added missing script to 'add new product' page
