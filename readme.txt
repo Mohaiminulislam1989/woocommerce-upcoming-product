@@ -12,7 +12,7 @@ Manage your upcoming product easily in WooCommerce.
 
 == Description ==
 
-Manage your upcoming product easily. 
+Manage your all type of upcoming product easily. Support product type: Simple Products, Variable Products, Grouped products, Grouped Products and any custom product types.
 
 * Manage Upcoming label
 * Hide / Show add to cart button for upcoming product
@@ -20,7 +20,7 @@ Manage your upcoming product easily.
 * Short by upcoming on shop page
 * Set product available date
 * Show / Hide Available date
-* Auto restock and auto live product on available date
+* Auto restock and auto live product on available date (please deactivare and reactivate the plugin to set cron properly)
 
 
 = More info =
