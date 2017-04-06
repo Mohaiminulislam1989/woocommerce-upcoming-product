@@ -3,7 +3,7 @@
 Plugin Name: Woocommerce upcoming Products
 Plugin URI: http://shaikat.me/
 Description: Manage your upcoming product easily. add upcoming label, remove add to cart button for the product, short by upcoming on shop page and set product available date.
-Version: 1.5.3
+Version: 1.5.4
 Author: Sk Shaikat
 Author URI: https://twitter.com/SK_Shaikat
 Text Domain: wup
@@ -45,6 +45,7 @@ class Woocommerce_Upcoming_Product
 
         // Localize our plugin
         add_action( 'init', array($this,'localization_setup' ) );
+        add_action( 'init', array($this,'wup_register_daily_upcoming_delete_event' ) );
 
         // Loads frontend scripts and styles
         add_action( 'admin_enqueue_scripts', array($this,'admin_enqueue_scripts' ) );
@@ -152,6 +153,14 @@ class Woocommerce_Upcoming_Product
 
     }
 
+    // Function which will register the event
+    function wup_register_daily_upcoming_delete_event() {
+        // Make sure this event hasn't been scheduled
+        if ( !wp_next_scheduled ( 'wup_expired_upcoming_product' ) ) {
+            wp_schedule_event( time(), 'daily', 'wup_expired_upcoming_product');
+        }
+    }
+
     /**
      * Enqueue admin scripts
      *
@@ -205,6 +214,9 @@ class Woocommerce_Upcoming_Product
 
         foreach ( $postslist as  $post ) {
             $available_on = get_post_meta( $post->ID, '_available_on', true );
+            if ( '' == $available_on ) {
+                return;
+            }
             $today = date_i18n(get_option( 'date_format' ), strtotime(date( 'today' ) ));
             $next_day = date('Y-m-d', strtotime('+1 day', strtotime($today)));
             $available_on = date('Y-m-d', strtotime($available_on));
@@ -292,7 +304,7 @@ class Woocommerce_Upcoming_Product
     function save_upcoming_options( $post_id  )
     {
         $_upcoming = ( isset( $_POST['_upcoming'] ) ) ? $_POST['_upcoming'] : '';
-        $_available_on = ( isset( $_POST['_available_on'] ) ) ? $_POST['_available_on'] : __( 'Date not set', 'wup' );
+        $_available_on = ( isset( $_POST['_available_on'] ) ) ? mysql2date( get_option( 'date_format' ), $_POST['_available_on'] ) : '';
         update_post_meta( $post_id, '_upcoming', $_upcoming );
         update_post_meta( $post_id, '_available_on', $_available_on );
     }
@@ -397,7 +409,7 @@ class Woocommerce_Upcoming_Product
                         }else {
                             ?>
                             <strong>
-                                <?php echo date_i18n(get_option( 'date_format' ), strtotime($_available_on)) ; ?>
+                                <?php echo date_i18n( get_option( 'date_format' ), strtotime( $_available_on ) ); ?>
                             </strong>
                             <?php
                         }
@@ -434,8 +446,6 @@ class Woocommerce_Upcoming_Product
                         </strong>
                         <?php
                     }else {
-                        $dateformatstring = "l d F, Y";
-                        $unixtimestamp    = strtotime($_available_on);
                         ?>
                         <strong>
                             <?php echo date_i18n(get_option( 'date_format' ), strtotime($_available_on)) ; ?>

@@ -4,7 +4,7 @@ Tags: WooCommerce upcoming product, upcoming product, e-commerce, coming soon pr
 Donate link: https://www.paypal.me/skshaikat
 Requires at least: 3.1
 Tested up to: 4.7.3
-Stable tag: 1.5.3
+Stable tag: 1.5.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -20,7 +20,7 @@ Manage your all type of upcoming product easily. Support product type: Simple Pr
 * Short by upcoming on shop page
 * Set product available date
 * Show / Hide Available date
-* Auto restock and auto live product on available date (please deactivare and reactivate the plugin to set cron properly)
+* Auto restock and auto live product on available date
 
 
 = More info =
@@ -47,6 +47,10 @@ and Enjoy... :)
 4. Upcoming product search option on shop page
 
 == Change log ==
+
+= 1.5.4 =
+* [tweak] Upcoming product which has no available date, will not go online
+* [tweak] No need to reactivate plugin to set cron
 
 = 1.5.3 =
 * [tweak] Set datepicker min-date to tomorrow date
