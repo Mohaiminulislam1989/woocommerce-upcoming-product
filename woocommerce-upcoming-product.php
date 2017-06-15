@@ -2,7 +2,7 @@
 /*
 Plugin Name: Woocommerce upcoming Products
 Plugin URI: http://shaikat.me/
-Description: Manage your upcoming product easily. add upcoming label, remove add to cart button for the product, short by upcoming on shop page and set product available date.
+Description: Manage your upcoming product easily.
 Version: 1.5.4
 Author: Sk Shaikat
 Author URI: https://twitter.com/SK_Shaikat
@@ -57,8 +57,7 @@ class Woocommerce_Upcoming_Product
         // wup let's play option
         add_action( 'woocommerce_before_shop_loop_item', array($this,'wup_shop_page_view' ) );
 
-        // Add Discount and sales price optin in backend for addmin
-        // add_action( 'woocommerce_product_options_general_product_data', array($this,'add_upcoming_options' ),10 );
+        // Add upcoming option
         add_action( 'woocommerce_product_options_advanced', array($this,'add_upcoming_options' ),10 );
         add_action( 'woocommerce_process_product_meta_simple', array($this,'save_upcoming_options' ),10 );
         add_action( 'woocommerce_process_product_meta_variable', array($this,'save_upcoming_options' ),10 );
@@ -81,7 +80,7 @@ class Woocommerce_Upcoming_Product
         add_filter( 'woocommerce_get_sections_products', array( $this,'wup_wc_product_settings_section' ), 10 );
 
         add_filter( 'woocommerce_get_settings_products', array( $this,'wup_wc_product_settings_option' ), 10, 2 );
-        add_action( 'wup_expired_upcoming_product', array( $this, 'wup_delete_product_updoming_meta' ) );
+        add_action( 'wup_expired_upcoming_product', array( $this, 'wup_auto_delete_product_updoming_meta' ) );
     }
 
 
@@ -143,14 +142,11 @@ class Woocommerce_Upcoming_Product
      * @uses wp_localize_script()
      * @uses wp_enqueue_style
      */
-    public function enqueue_scripts()
-    {
-
+    public function enqueue_scripts() {
         /**
          * All styles goes here
          */
         wp_enqueue_style( 'upcoming-styles', plugins_url( 'css/style.css', __FILE__ ), false, date( 'Ymd' ) );
-
     }
 
     // Function which will register the event
@@ -182,24 +178,24 @@ class Woocommerce_Upcoming_Product
         wp_enqueue_script( 'upcoming-scripts', plugins_url( 'js/script.js', __FILE__ ), array('jquery' ), false, true );
     }
 
-    // /**
-    //  * Delete upcoming meta from product
-    //  *
-    //  * @since 1.5
-    //  */
-    // function wup_auto_delete_product_updoming_meta() {
-    //     if ( $this->is_upcoming() && WC_Admin_Settings::get_option( 'wup_auto_live', 'yes' ) == 'yes' ) {
-    //         $this->wup_delete_product_updoming_meta();
-    //     }
-    // }
-
-
     /**
      * Delete upcoming meta from product
      *
      * @since 1.5
      */
-    function wup_delete_product_updoming_meta() {
+    function wup_auto_delete_product_updoming_meta() {
+        if ( $this->is_upcoming() && WC_Admin_Settings::get_option( 'wup_auto_live', 'yes' ) == 'yes' ) {
+            $this->wup_delete_product_updoming_meta();
+        }
+    }
+
+
+    /**
+     * get upcoming product
+     *
+     * @since 1.5.5
+     */
+    function wup_get_updoming_products() {
         $args = array(
             'post_type' => 'product',
             'meta_query' => array(
@@ -210,16 +206,25 @@ class Woocommerce_Upcoming_Product
                 )
             )
          );
-        $postslist = get_posts( $args );
+        return get_posts( $args );
+    }
+
+    /**
+     * Delete upcoming meta from product
+     *
+     * @since 1.5
+     */
+    function wup_auto_delete_product_updoming_meta() {
+        $postslist = wup_get_updoming_products();
 
         foreach ( $postslist as  $post ) {
             $available_on = get_post_meta( $post->ID, '_available_on', true );
             if ( '' == $available_on ) {
                 return;
             }
-            $today = date_i18n(get_option( 'date_format' ), strtotime(date( 'today' ) ));
-            $next_day = date('Y-m-d', strtotime('+1 day', strtotime($today)));
-            $available_on = date('Y-m-d', strtotime($available_on));
+            $today = date_i18n(get_option( 'date_format' ), strtotime( date( 'today' ) ) );
+            $next_day = date('Y-m-d', strtotime( '+1 day', strtotime( $today ) ) );
+            $available_on = date('Y-m-d', strtotime( $available_on ) );
             if ( $next_day > $available_on ) {
                 delete_post_meta( $post->ID, '_upcoming' );
             }
@@ -493,13 +498,13 @@ class Woocommerce_Upcoming_Product
                         'id'   => 'wup_options'
                     ),
 
-                    // array(
-                    //     'title'  => __( 'Product auto live', 'wup' ),
-                    //     'desc'   => __( 'Upcoming product will automatically go online on available date', 'wup' ),
-                    //     'id'     => 'wup_auto_live',
-                    //     'default'=> 'yes',
-                    //     'type'   => 'checkbox'
-                    // ),
+                    array(
+                        'title'  => __( 'Product auto live', 'wup' ),
+                        'desc'   => __( 'Upcoming product will automatically go online on available date', 'wup' ),
+                        'id'     => 'wup_auto_live',
+                        'default'=> 'yes',
+                        'type'   => 'checkbox'
+                    ),
 
                     array(
                         'title'  => __( 'Upcoming Product title label', 'wup' ),
