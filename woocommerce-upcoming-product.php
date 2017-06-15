@@ -1,11 +1,11 @@
 <?php
 /*
 Plugin Name: Woocommerce upcoming Products
-Plugin URI: http://shaikat.me/
-Description: Manage your upcoming product easily.
+Plugin URI: https://github.com/Sk-Shaikat/woocommerce-upcoming-product
+Description: Best Plugin to Manage your upcoming product easily in WooCommerce.
 Version: 1.5.4
 Author: Sk Shaikat
-Author URI: https://twitter.com/SK_Shaikat
+Author URI: http://shaikat.me
 Text Domain: wup
 Domain Path: /languages
 License: GPL2
@@ -58,24 +58,24 @@ class Woocommerce_Upcoming_Product
         add_action( 'woocommerce_before_shop_loop_item', array($this,'wup_shop_page_view' ) );
 
         // Add upcoming option
-        add_action( 'woocommerce_product_options_advanced', array($this,'add_upcoming_options' ),10 );
-        add_action( 'woocommerce_process_product_meta_simple', array($this,'save_upcoming_options' ),10 );
-        add_action( 'woocommerce_process_product_meta_variable', array($this,'save_upcoming_options' ),10 );
+        add_action( 'woocommerce_product_options_advanced', array($this,'wup_add_upcoming_options' ),10 );
+        add_action( 'woocommerce_process_product_meta_simple', array($this,'wup_save_upcoming_options' ),10 );
+        add_action( 'woocommerce_process_product_meta_variable', array($this,'wup_save_upcoming_options' ),10 );
 
         // image ribbon
-        add_filter( 'the_title', array($this,'upcoming_product_title' ), 2, 10 );
+        add_filter( 'the_title', array($this,'wup_upcoming_product_title' ), 2, 10 );
 
         // add search form option
-        add_filter( 'woocommerce_catalog_orderby', array($this,'upcoming_search_option' ) );
+        add_filter( 'woocommerce_catalog_orderby', array($this,'wup_upcoming_search_option' ) );
 
         // custom preorder search queary
-        add_action( 'woocommerce_product_query', array($this,'upcoming_custom_queary'), 2 );
+        add_action( 'woocommerce_product_query', array($this,'wup_upcoming_custom_queary'), 2 );
 
-        add_filter( 'woocommerce_single_product_summary', array($this,'custom_get_availability' ), 15 );
+        add_filter( 'woocommerce_single_product_summary', array($this,'wup_custom_get_availability' ), 15 );
 
         // pre order single product view
-        add_action( 'woocommerce_single_product_summary', array($this,'upcoming_single_page_view'), 30 );
-        add_action( 'woocommerce_after_shop_loop_item', array($this,'upcoming_shop_page_view'), 7 );
+        add_action( 'woocommerce_single_product_summary', array($this,'wup_upcoming_single_page_view'), 30 );
+        add_action( 'woocommerce_after_shop_loop_item', array($this,'wup_upcoming_shop_page_view'), 7 );
 
         add_filter( 'woocommerce_get_sections_products', array( $this,'wup_wc_product_settings_section' ), 10 );
 
@@ -108,8 +108,8 @@ class Woocommerce_Upcoming_Product
      */
     public function activate()
     {
-        if (! wp_next_scheduled ( 'wup_expired_upcoming_product' )) {
-            wp_schedule_event(time(), 'daily', 'wup_expired_upcoming_product');
+        if (! wp_next_scheduled ( 'wup_expired_upcoming_product' ) ) {
+            wp_schedule_event( time(), 'daily', 'wup_expired_upcoming_product' );
         }
     }
 
@@ -120,7 +120,7 @@ class Woocommerce_Upcoming_Product
      */
     public function deactivate()
     {
-        wp_clear_scheduled_hook('wup_expired_upcoming_product');
+        wp_clear_scheduled_hook( 'wup_expired_upcoming_product' );
     }
 
     /**
@@ -181,11 +181,11 @@ class Woocommerce_Upcoming_Product
     /**
      * Delete upcoming meta from product
      *
-     * @since 1.5
+     * @since 1.5.5
      */
     function wup_auto_delete_product_updoming_meta() {
         if ( $this->is_upcoming() && WC_Admin_Settings::get_option( 'wup_auto_live', 'yes' ) == 'yes' ) {
-            $this->wup_delete_product_updoming_meta();
+            $this->wup_scheduled_delete_product_updoming_meta();
         }
     }
 
@@ -214,7 +214,7 @@ class Woocommerce_Upcoming_Product
      *
      * @since 1.5
      */
-    function wup_auto_delete_product_updoming_meta() {
+    function wup_scheduled_delete_product_updoming_meta() {
         $postslist = wup_get_updoming_products();
 
         foreach ( $postslist as  $post ) {
@@ -272,14 +272,14 @@ class Woocommerce_Upcoming_Product
      */
     function wup_shop_page_view()
     {
-        if ( WC_Admin_Settings::get_option( 'wup_price_hide_shop', 'no' ) == 'yes' && $this->is_upcoming() ) {
+        if ( $this->is_upcoming() && WC_Admin_Settings::get_option( 'wup_price_hide_shop', 'no' ) == 'yes' ) {
             remove_action( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price', 10 );
-        } else {
+        } else if ( !$this->is_upcoming() && WC_Admin_Settings::get_option( 'wup_price_hide_shop', 'no' ) == 'yes' ) {
             add_action( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price', 10 );
         }
-        if ( WC_Admin_Settings::get_option( 'wup_button_hide_shop', 'no' ) == 'yes' && $this->is_upcoming() ) {
+        if ( $this->is_upcoming() && WC_Admin_Settings::get_option( 'wup_button_hide_shop', 'no' ) == 'yes' ) {
             remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10 );
-        } else {
+        } else if ( !$this->is_upcoming() && WC_Admin_Settings::get_option( 'wup_button_hide_shop', 'no' ) == 'yes' ) {
             add_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10 );
         }
     }
@@ -291,8 +291,7 @@ class Woocommerce_Upcoming_Product
      *
      * @global $post
      */
-    function add_upcoming_options()
-    {
+    function wup_add_upcoming_options() {
         global $post;
         woocommerce_wp_checkbox( array('id'         => '_upcoming','label'      => __( 'Upcoming Product', 'wup' ),'description'=> __( 'Enable for upcoming product', 'wup' ) ) );
         $available_class = ( get_post_meta( $post->ID, '_upcoming', true ) == 'yes' ) ? '' : 'wup-hide';
@@ -306,8 +305,7 @@ class Woocommerce_Upcoming_Product
      * 
      * @param int $post_id
      */
-    function save_upcoming_options( $post_id  )
-    {
+    function wup_save_upcoming_options( $post_id  ) {
         $_upcoming = ( isset( $_POST['_upcoming'] ) ) ? $_POST['_upcoming'] : '';
         $_available_on = ( isset( $_POST['_available_on'] ) ) ? mysql2date( get_option( 'date_format' ), $_POST['_available_on'] ) : '';
         update_post_meta( $post_id, '_upcoming', $_upcoming );
@@ -323,7 +321,7 @@ class Woocommerce_Upcoming_Product
      * @param int $id
      * @return string $title
      */
-    function upcoming_product_title( $title, $id )
+    function wup_upcoming_product_title( $title, $id )
     {
         if ( is_admin() ) {
             return $title;
@@ -343,7 +341,7 @@ class Woocommerce_Upcoming_Product
      * @param array $catalog_orderby
      * @return array $catalog_orderby
      */
-    function upcoming_search_option( $catalog_orderby )
+    function wup_upcoming_search_option( $catalog_orderby )
     {
         $catalog_orderby['upcoming'] = __( 'Sort by upcoming', 'wup' );
         return $catalog_orderby;
@@ -358,9 +356,7 @@ class Woocommerce_Upcoming_Product
      * 
      * @return obj
      */
-    function upcoming_custom_queary($q)
-    {
-
+    function wup_upcoming_custom_queary( $q ) {
         $meta_query = $q->query_vars['meta_query'];
 
         if ( isset( $_GET['orderby'] ) && $_GET['orderby'] == 'upcoming' ) {
@@ -379,8 +375,7 @@ class Woocommerce_Upcoming_Product
      *
      * @since 1.0
      */
-    function custom_get_availability()
-    {
+    function wup_custom_get_availability() {
         $price_label = WC_Admin_Settings::get_option( 'wup_price_label_txt', __( 'Coming Soon', 'wup' ) );
         if ( $this->is_upcoming() && WC_Admin_Settings::get_option( 'wup_price_label', 'yes' ) == 'yes' ) {
             echo sprintf( __( '<div class="product_meta"><span class="wup-price-label">%s</span></div>', 'wup' ), $price_label );
@@ -394,31 +389,23 @@ class Woocommerce_Upcoming_Product
      *
      * @global $post
      */
-    function upcoming_single_page_view()
-    {
+    function wup_upcoming_single_page_view() {
         global $post;
-        if ( WC_Admin_Settings::get_option( 'wup_show_available_date_single', 'yes' ) == 'yes' ) {
-            $_available_on = get_post_meta( $post->ID, '_available_on', true );
-            if ( $this->is_upcoming() ) {
-                ?>
+        if ( $this->is_upcoming() ) {
+            if ( WC_Admin_Settings::get_option( 'wup_show_available_date_single', 'yes' ) == 'yes' ) {
+                $_available_on = get_post_meta( $post->ID, '_available_on', true ); ?>
                 <div class="product_meta">
                     <span class="available-from">
-                        <?php _e( 'Available from: ', 'wup' );
-
-                        if ( $_available_on == '' ) {
+                        <strong>
+                            <?php 
+                            echo WC_Admin_Settings::get_option( 'wup_availabel_date_lebel', 'Available from' ) . ': ';
+                            if ( empty( $_available_on ) ) { 
+                                echo WC_Admin_Settings::get_option( 'wup_not_availabel_date_text', 'Date not set yet' );
+                            }else { 
+                                echo date_i18n( get_option( 'date_format' ), strtotime( $_available_on) ) ;
+                            } 
                             ?>
-                            <strong>
-                                <?php _e( 'Date not yet set.', 'wup' ); ?>
-                            </strong>
-                            <?php
-                        }else {
-                            ?>
-                            <strong>
-                                <?php echo date_i18n( get_option( 'date_format' ), strtotime( $_available_on ) ); ?>
-                            </strong>
-                            <?php
-                        }
-                        ?>
+                        </strong>
                     </span>
                 </div>
                 <?php
@@ -434,30 +421,24 @@ class Woocommerce_Upcoming_Product
      *
      * @global $post
      */
-    function upcoming_shop_page_view()
-    {
+    function wup_upcoming_shop_page_view() {
         global $post;
-        if ( WC_Admin_Settings::get_option( 'wup_show_available_date_shop', 'yes' ) == 'yes' ) {
-            $_available_on = get_post_meta( $post->ID, '_available_on', true );
-            if ( $this->is_upcoming() ) {
-                ?>
-                <div class="upcoming">
-                    <?php _e( 'Available from: ', 'wup' );
-
-                    if ( $_available_on == '' ) {
-                        ?>
+        if ( $this->is_upcoming() ) {
+            if ( WC_Admin_Settings::get_option( 'wup_show_available_date_shop', 'yes' ) == 'yes' ) {
+                $_available_on = get_post_meta( $post->ID, '_available_on', true ); ?>
+                <div class="price">
+                    <span class="available-from">
                         <strong>
-                            <?php _e( 'Date not yet set.', 'wup' ); ?>
+                            <?php 
+                            echo WC_Admin_Settings::get_option( 'wup_availabel_date_lebel', 'Available from' ) . ': ';
+                            if ( empty( $_available_on ) ) { 
+                                echo WC_Admin_Settings::get_option( 'wup_not_availabel_date_text', 'Date not set yet' );
+                            }else { 
+                                echo date_i18n( get_option( 'date_format' ), strtotime( $_available_on) ) ;
+                            } 
+                            ?>
                         </strong>
-                        <?php
-                    }else {
-                        ?>
-                        <strong>
-                            <?php echo date_i18n(get_option( 'date_format' ), strtotime($_available_on)) ; ?>
-                        </strong>
-                        <?php
-                    }
-                    ?>
+                    </span>
                 </div>
                 <?php
             }
@@ -472,8 +453,7 @@ class Woocommerce_Upcoming_Product
      * @param array $sections
      * @return array $sections
      */
-    function wup_wc_product_settings_section( $sections )
-    {
+    function wup_wc_product_settings_section( $sections ) {
         $sections['wup'] = __( 'Upcoming Products', 'wup' );
         return $sections;
     }
@@ -487,8 +467,7 @@ class Woocommerce_Upcoming_Product
      * @param string $current_section
      * @return array $settings
      */
-    function wup_wc_product_settings_option( $settings, $current_section )
-    {
+    function wup_wc_product_settings_option( $settings, $current_section ) {
         if ( 'wup' == $current_section ) {
             $settings = apply_filters( 'wup_product_settings', array(
                     array(
@@ -499,7 +478,7 @@ class Woocommerce_Upcoming_Product
                     ),
 
                     array(
-                        'title'  => __( 'Product auto live', 'wup' ),
+                        'title'  => __( 'Upcoming Product auto live', 'wup' ),
                         'desc'   => __( 'Upcoming product will automatically go online on available date', 'wup' ),
                         'id'     => 'wup_auto_live',
                         'default'=> 'yes',
@@ -507,7 +486,39 @@ class Woocommerce_Upcoming_Product
                     ),
 
                     array(
-                        'title'  => __( 'Upcoming Product title label', 'wup' ),
+                        'title'  => __( 'Price hide on single page', 'wup' ),
+                        'desc'   => __( 'Hide upcoming product price on <code>single product page</code>', 'wup' ),
+                        'id'     => 'wup_price_hide_single',
+                        'default'=> 'no',
+                        'type'   => 'checkbox'
+                    ),
+
+                    array(
+                        'title'   => __( 'Price hide on shop page', 'wup' ),
+                        'desc'    => __( 'Hide upcoming product price on <code>product shop page</code>', 'wup' ),
+                        'id'      => 'wup_price_hide_shop',
+                        'default' => 'no',
+                        'type'    => 'checkbox'
+                    ),
+
+                    array(
+                        'title'  => __( 'Button Hide on Single Page', 'wup' ),
+                        'desc'   => __( 'Hide "Add to Cart" button of upcoming product on <code>single product page</code>', 'wup' ),
+                        'id'     => 'wup_button_hide_single',
+                        'default'=> 'no',
+                        'type'   => 'checkbox'
+                    ),
+
+                    array(
+                        'title'   => __( 'Button hide on shop page', 'wup' ),
+                        'desc'    => __( 'Hide "Add to Cart" button of upcoming product on <code>product shop page</code>', 'wup' ),
+                        'id'      => 'wup_button_hide_shop',
+                        'default' => 'no',
+                        'type'    => 'checkbox'
+                    ),
+
+                    array(
+                        'title'  => __( 'Show title label', 'wup' ),
                         'desc'   => __( 'Show label on upcoming product title', 'wup' ),
                         'id'     => 'wup_title_label',
                         'default'=> 'yes',
@@ -516,74 +527,58 @@ class Woocommerce_Upcoming_Product
 
                     array(
                         'title'  => __( 'Title label Text', 'wup' ),
-                        'desc'   => __( 'Label will show on upcoming product title', 'wup' ),
+                        'desc'   => __( 'Label will show with upcoming product title', 'wup' ),
                         'id'     => 'wup_title_label_txt',
                         'default'=> 'Upcoming',
                         'type'   => 'text'
                     ),
 
                     array(
-                        'title'  => __( 'Price Hide on Single Page', 'wup' ),
-                        'desc'   => __( 'Hide price of upcoming product on single product page', 'wup' ),
-                        'id'     => 'wup_price_hide_single',
-                        'default'=> 'no',
-                        'type'   => 'checkbox'
-                    ),
-
-                    array(
-                        'title'   => __( 'Price Hide on Shop Page', 'wup' ),
-                        'desc'    => __( 'Hide price of upcoming product on shop page', 'wup' ),
-                        'id'      => 'wup_price_hide_shop',
-                        'default' => 'no',
-                        'type'    => 'checkbox'
-                    ),
-
-                    array(
-                        'title'  => __( 'Upcoming Product price label', 'wup' ),
-                        'desc'   => __( 'Show label under price of upcoming product', 'wup' ),
+                        'title'  => __( 'Show price label', 'wup' ),
+                        'desc'   => __( 'Show text under upcoming product price', 'wup' ),
                         'id'     => 'wup_price_label',
                         'default'=> 'yes',
                         'type'   => 'checkbox'
                     ),
 
                     array(
-                        'title'  => __( 'Text Under Price', 'wup' ),
-                        'desc'   => __( 'Text under product price', 'wup' ),
+                        'title'  => __( 'Price label text', 'wup' ),
+                        'desc'   => __( 'Text under upcoming product price', 'wup' ),
                         'id'     => 'wup_price_label_txt',
                         'default'=> 'Coming Soon',
                         'type'   => 'text'
                     ),
 
                     array(
-                        'title'  => __( '"Add to Cart" Button Hide on Single Page', 'wup' ),
-                        'desc'   => __( 'Hide "Add to Cart" Button of upcoming product on single product page', 'wup' ),
-                        'id'     => 'wup_button_hide_single',
-                        'default'=> 'no',
-                        'type'   => 'checkbox'
-                    ),
-
-                    array(
-                        'title'   => __( '"Add to Cart" Button Hide on Shop Page', 'wup' ),
-                        'desc'    => __( 'Hide "Add to Cart" Button of upcoming product on shop page', 'wup' ),
-                        'id'      => 'wup_button_hide_shop',
-                        'default' => 'no',
-                        'type'    => 'checkbox'
-                    ),
-
-                    array(
-                        'title'  => __( 'Available Date Show on Single Page', 'wup' ),
-                        'desc'   => __( 'Show available date on single product page view', 'wup' ),
+                        'title'  => __( 'Show available date on single page', 'wup' ),
+                        'desc'   => __( 'Show available date on <code>single product page</code>', 'wup' ),
                         'id'     => 'wup_show_available_date_single',
                         'default'=> 'yes',
                         'type'   => 'checkbox'
                     ),
 
                     array(
-                        'title'  => __( 'Available Date Show on Shop Page', 'wup' ),
-                        'desc'   => __( 'Show available date on shop product page view', 'wup' ),
+                        'title'  => __( 'Show available date on shop page', 'wup' ),
+                        'desc'   => __( 'Show available date on <code>product shop page</code>', 'wup' ),
                         'id'     => 'wup_show_available_date_shop',
                         'default'=> 'yes',
                         'type'   => 'checkbox'
+                    ),
+
+                    array(
+                        'title'  => __( 'Available date lebel', 'wup' ),
+                        'desc'   => __( 'Lebel of showing available date', 'wup' ),
+                        'id'     => 'wup_availabel_date_lebel',
+                        'default'=> 'Available from',
+                        'type'   => 'text'
+                    ),
+
+                    array(
+                        'title'  => __( 'Not available date text', 'wup' ),
+                        'desc'   => __( 'Text to show if available date not set', 'wup' ),
+                        'id'     => 'wup_not_availabel_date_text',
+                        'default'=> 'Date not set yet',
+                        'type'   => 'text'
                     ),
 
                     array(
