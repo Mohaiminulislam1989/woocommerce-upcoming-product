@@ -82,6 +82,9 @@ class Woocommerce_Upcoming_Product
 
         add_filter( 'woocommerce_get_settings_products', array( $this,'wup_wc_product_settings_option' ), 10, 2 );
         add_action( 'wup_expired_upcoming_product', array( $this, 'wup_auto_delete_product_updoming_meta' ) );
+
+        // time need to set in 2 format date and duration.
+        // need to add shortcode for showing upcoming procuct.
     }
 
 
@@ -218,14 +221,16 @@ class Woocommerce_Upcoming_Product
     function wup_scheduled_delete_product_updoming_meta() {
         $posts_list = $this->wup_get_updoming_products();
         foreach ( $posts_list as  $post ) {
-            $available_on = get_post_meta( $post->ID, '_available_on', true );
-            if ( empty( $available_on ) ) {
-                return;
-            }
-            $next_day = date( 'Y-m-d', strtotime( '+1 day' ) );
-            $available_on = date( 'Y-m-d', strtotime( $available_on ) );
-            if ( $next_day > $available_on ) {
-                delete_post_meta( $post->ID, '_upcoming' );
+            if ( get_post_meta( $post->ID, '_upcoming', true ) == 'yes' ) {
+                $available_on = get_post_meta( $post->ID, '_available_on', true );
+                if ( empty( $available_on ) ) {
+                    return;
+                }
+                $next_day = date( 'Y-m-d', strtotime( '+1 day' ) );
+                $available_on = date( 'Y-m-d', strtotime( $available_on ) );
+                if ( $next_day > $available_on ) {
+                    delete_post_meta( $post->ID, '_upcoming' );
+                }
             }
         }
     }
@@ -252,8 +257,7 @@ class Woocommerce_Upcoming_Product
      *
      * @since 1.0
      */
-    function wup_single_page_view()
-    {
+    function wup_single_page_view() {
         if ( $this->is_upcoming() ) {
             if ( WC_Admin_Settings::get_option( 'wup_price_hide_single', 'no' ) == 'yes' ) {
                 remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_price', 10 );
@@ -269,8 +273,7 @@ class Woocommerce_Upcoming_Product
      *
      * @since 1.0
      */
-    function wup_shop_page_view()
-    {
+    function wup_shop_page_view() {
         if ( $this->is_upcoming() && WC_Admin_Settings::get_option( 'wup_price_hide_shop', 'no' ) == 'yes' ) {
             remove_action( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price', 10 );
         } else if ( !$this->is_upcoming() && WC_Admin_Settings::get_option( 'wup_price_hide_shop', 'no' ) == 'yes' ) {
