@@ -9,6 +9,9 @@
 	    }
 	});
 
-	$('#_available_on').datepicker({ minDate: 1 });
+	$('#_available_on').datepicker({ 
+		minDate: 1,
+		dateFormat: 'yy-mm-dd'
+	});
 
 })(jQuery);

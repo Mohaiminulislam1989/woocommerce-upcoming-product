@@ -3,8 +3,8 @@ Contributors: sk.shaikat
 Tags: WooCommerce upcoming product, upcoming product, e-commerce, coming soon product, WooCommerce, extension, product, new product, dokan, wc-vendors, multivendor, marketplace, later product, stacked products, available from, offline products, advance product, processing product, advancement product, advertise product, advise product, pose product, pretend product, assert product, exert product, show off product, proclaim product, disseminate product, promulgate product, publish product, issue product, declare product, announce product, set forth product, set out product, notify product, advertising product, product on hold, onhold, onhold product, WC
 Donate link: https://www.paypal.me/skshaikat
 Requires at least: 3.1
-Tested up to: 4.7.3
-Stable tag: 1.5.4
+Tested up to: 4.8
+Stable tag: 1.5.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -29,7 +29,7 @@ This plugin is coming with some awesome feature on its next update. Any suggesti
 
 Support: Please navigate to the support tab.
 
-Author:  [@Sk_Shaikat](https://twitter.com/SK_Shaikat)
+Author:  [@Sk_Shaikat](http://shaikat.me)
 
 == Installation ==
 
@@ -47,6 +47,18 @@ and Enjoy... :)
 4. Upcoming product search option on shop page
 
 == Change log ==
+
+= 1.5.5 =
+* [new] Add settings to manage upcoming product auto live
+* [new] Add settings to manage available date level
+* [new] Add settings to manage text if available date not set
+* [new] Add settings to manage shop page short by dropdown text
+* [tweak] Format code and update validation functionality
+* [tweak] Cron schedule now run twice a day so product will be online on available date
+* [fix] Date issue with other languages
+* [fix] Add to cart issue by URL
+* [fix] Add to cart and price duplicate on shop page issue
+* [fix] Stock management issue
 
 = 1.5.4 =
 * [tweak] Upcoming product which has no available date, will not go online
