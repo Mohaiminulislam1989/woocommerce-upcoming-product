@@ -344,7 +344,7 @@ class Woocommerce_Upcoming_Product
      * @param int $id
      * @return string $title
      */
-    function wup_upcoming_product_title( $title, $id )
+    function wup_upcoming_product_title( $title, $id = null )
     {
         if ( is_admin() ) {
             return $title;
