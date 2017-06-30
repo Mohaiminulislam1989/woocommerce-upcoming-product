@@ -49,6 +49,7 @@ and Enjoy... :)
 == Change log ==
 
 = 1.5.6 =
+* [new] Add settings to show available date as 'date' or 'duration'
 * [new] Add settings in plugin action link
 * [new] Remove some unnecessary settings options to manage easily
 * [tweak] Format code and update validation functionality
