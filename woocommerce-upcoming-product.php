@@ -40,6 +40,17 @@ class Woocommerce_Upcoming_Product
      */
     public function __construct()
     {
+        $this->wup_define_constants();
+        $this->wup_init_hooks();
+
+        do_action( 'wup_loaded' );
+    }
+
+    /**
+     * Hook into actions and filters.
+     * @since  1.5.6
+     */
+    private function wup_init_hooks() {
         register_activation_hook( __FILE__, array( $this,'activate' ) );
         register_deactivation_hook( __FILE__, array( $this,'deactivate' ) );
 
@@ -83,6 +94,8 @@ class Woocommerce_Upcoming_Product
         add_filter( 'woocommerce_get_settings_products', array( $this,'wup_wc_product_settings_option' ), 10, 2 );
         add_action( 'wup_expired_upcoming_product', array( $this, 'wup_auto_delete_product_updoming_meta' ) );
 
+        add_filter( 'plugin_action_links_' . WUP_PLUGIN_BASENAME, array( $this, 'wup_plugin_action_links' ) );
+
         // time need to set in 2 format date and duration.
         // need to add shortcode for showing upcoming procuct.
     }
@@ -94,8 +107,9 @@ class Woocommerce_Upcoming_Product
      * Checks for an existing Woocommerce_Upcoming_Product() instance
      * and if it doesn't find one, creates it.
      */
-    public static function init()
-    {
+    public static function init() {
+        // Before init action.
+        do_action( 'before_wup_init' );
         static $instance = false;
 
         if ( ! $instance ) {
@@ -180,6 +194,44 @@ class Woocommerce_Upcoming_Product
         }
         wp_enqueue_style( 'upcoming-styles', plugins_url( 'css/admin-style.css', __FILE__ ), false, date( 'Ymd' ) );
         wp_enqueue_script( 'upcoming-scripts', plugins_url( 'js/script.js', __FILE__ ), array('jquery' ), false, true );
+    }
+
+    /**
+     * Define WC Constants.
+     */
+    private function wup_define_constants() {
+        $upload_dir = wp_upload_dir();
+        $this->wup_define( 'WUP_PLUGIN_FILE', __FILE__ );
+        $this->wup_define( 'WUP_ABSPATH', dirname( __FILE__ ) . '/' );
+        $this->wup_define( 'WUP_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
+    }
+
+    /**
+     * Define constant if not already set.
+     *
+     * @param  string $name
+     * @param  string|bool $value
+     */
+    private function wup_define( $name, $value ) {
+        if ( ! defined( $name ) ) {
+            define( $name, $value );
+        }
+    }
+
+    /**
+     * Show action links on the plugin screen.
+     * 
+     * @since 1.5.6
+     *
+     * @param   mixed $links Plugin Action links
+     * @return  array
+     */
+    public static function wup_plugin_action_links( $links ) {
+        $action_links = array(
+            'settings' => '<a href="' . admin_url( 'admin.php?page=wc-settings&tab=products&section=wup' ) . '" aria-label="' . esc_attr__( 'View WooCommerce settings', 'woocommerce' ) . '">' . esc_html__( 'Settings', 'woocommerce' ) . '</a>',
+        );
+
+        return array_merge( $action_links, $links );
     }
 
     /**
