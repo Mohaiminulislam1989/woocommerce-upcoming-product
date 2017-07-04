@@ -431,12 +431,10 @@ class Woocommerce_Upcoming_Product
      * @param int $post_id
      */
     function wup_save_upcoming_options( $post_id  ) {
-        if ( !isset( $_POST['_upcoming'] ) ) {
-            return;
-        }
-
+        $_upcoming = isset( $_POST['_upcoming'] ) ? $_POST['_upcoming'] : '';
         $_available_on = ( isset( $_POST['_available_on'] ) ) ? wc_clean( $_POST['_available_on'] ) : '';
-        update_post_meta( $post_id, '_upcoming', $_POST['_upcoming'] );
+        
+        update_post_meta( $post_id, '_upcoming', $_upcoming );
         update_post_meta( $post_id, '_available_on', $_available_on );
     }
 
