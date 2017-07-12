@@ -3,7 +3,7 @@
 Plugin Name: Woocommerce upcoming Products
 Plugin URI: https://github.com/Sk-Shaikat/woocommerce-upcoming-product
 Description: Best Plugin to Manage your upcoming product easily in WooCommerce.
-Version: 1.5.6
+Version: 1.5.7
 Author: Sk Shaikat
 Author URI: http://shaikat.me
 Text Domain: wup
@@ -96,7 +96,8 @@ class Woocommerce_Upcoming_Product
 
         add_filter( 'plugin_action_links_' . WUP_PLUGIN_BASENAME, array( $this, 'wup_plugin_action_links' ) );
 
-        // need to add shortcode for showing upcoming procuct.
+        add_shortcode( 'upcoming_products', array( $this, 'wup_upcoming_products' ) );
+
         // need subscription manager
     }
 
@@ -228,10 +229,145 @@ class Woocommerce_Upcoming_Product
      */
     public static function wup_plugin_action_links( $links ) {
         $action_links = array(
-            'settings' => '<a href="' . admin_url( 'admin.php?page=wc-settings&tab=products&section=wup' ) . '" aria-label="' . esc_attr__( 'View WooCommerce settings', 'woocommerce' ) . '">' . esc_html__( 'Settings', 'woocommerce' ) . '</a>',
+            'settings' => '<a href="' . admin_url( 'admin.php?page=wc-settings&tab=products&section=wup' ) . '" aria-label="' . esc_attr__( 'View upcoming product settings', 'wup' ) . '">' . esc_html__( 'Settings', 'wup' ) . '</a>',
         );
 
         return array_merge( $action_links, $links );
+    }
+
+    /**
+     * Loop over found products.
+     * @param  array $query_args
+     * @param  array $atts
+     * @param  string $loop_name
+     * @return string
+     */
+    private static function wup_product_loop( $query_args, $atts, $loop_name ) {
+        global $woocommerce_loop;
+
+        $columns                     = absint( $atts['columns'] );
+        $woocommerce_loop['columns'] = $columns;
+        $woocommerce_loop['name']    = $loop_name;
+        $query_args                  = apply_filters( 'woocommerce_shortcode_products_query', $query_args, $atts, $loop_name );
+        $transient_name              = 'wc_loop' . substr( md5( json_encode( $query_args ) . $loop_name ), 28 ) . WC_Cache_Helper::get_transient_version( 'product_query' );
+        $products                    = get_transient( $transient_name );
+
+        if ( false === $products || ! is_a( $products, 'WP_Query' ) ) {
+            $products = new WP_Query( $query_args );
+            set_transient( $transient_name, $products, DAY_IN_SECONDS * 30 );
+        }
+
+        ob_start();
+
+        if ( $products->have_posts() ) {
+
+            // Prime caches before grabbing objects.
+            update_post_caches( $products->posts, array( 'product', 'product_variation' ) );
+            ?>
+
+            <?php do_action( "woocommerce_shortcode_before_{$loop_name}_loop", $atts ); ?>
+
+            <?php woocommerce_product_loop_start(); ?>
+
+                <?php while ( $products->have_posts() ) : $products->the_post(); ?>
+
+                    <?php wc_get_template_part( 'content', 'product' ); ?>
+
+                <?php endwhile; // end of the loop. ?>
+
+            <?php woocommerce_product_loop_end(); ?>
+
+            <?php do_action( "woocommerce_shortcode_after_{$loop_name}_loop", $atts ); ?>
+
+            <?php
+        } else {
+            do_action( "woocommerce_shortcode_{$loop_name}_loop_no_results", $atts );
+        }
+
+        woocommerce_reset_loop();
+        wp_reset_postdata();
+
+        return '<div class="woocommerce columns-' . $columns . '">' . ob_get_clean() . '</div>';
+    }
+
+
+    /**
+     * List multiple upcoming products shortcode.
+     *
+     * @param array $atts
+     * @return string
+     */
+    public static function wup_upcoming_products( $atts ) {
+        $atts = shortcode_atts( array(
+            'per_page'  => '12',
+            'columns'   => '4',
+            'orderby'   => 'date',
+            'order'     => 'desc',
+            'ids'       => '',
+            'skus'      => '',
+            'category'  => '',  // Slugs
+            'operator'  => 'IN', // Possible values are 'IN', 'NOT IN', 'AND'.
+        ), $atts, 'upcoming_products' );
+
+        $query_args = array(
+            'post_type'           => 'product',
+            'post_status'         => 'publish',
+            'ignore_sticky_posts' => 1,
+            'posts_per_page'      => $atts['per_page'],
+            'orderby'             => $atts['orderby'],
+            'order'               => $atts['order'],
+            'meta_query'          => WC()->query->get_meta_query(),
+            'tax_query'           => WC()->query->get_tax_query(),
+        );
+
+        if ( ! empty( $atts['skus'] ) ) {
+            $query_args['meta_query'][] = array(
+                'key'     => '_sku',
+                'value'   => array_map( 'trim', explode( ',', $atts['skus'] ) ),
+                'compare' => 'IN',
+            );
+        }
+
+        if ( ! empty( $atts['ids'] ) ) {
+            $query_args['post__in'] = array_map( 'trim', explode( ',', $atts['ids'] ) );
+        }
+
+        $query_args = $this->wup_maybe_add_category_args( $query_args, $atts['category'], $atts['operator'] );
+
+        $query_args['meta_query'][] = array(
+            'key'     => '_upcoming',
+            'value'   => 'yes',
+            'compare' => '=',
+        );
+
+        return $this->wup_product_loop( $query_args, $atts, 'upcoming_products' );
+    }
+
+    /**
+     * Adds a tax_query index to the query to filter by category.
+     *
+     * @param array $args
+     * @param string $category
+     * @param string $operator
+     * @return array;
+     * @access private
+     */
+    private static function wup_maybe_add_category_args( $args, $category, $operator ) {
+        if ( ! empty( $category ) ) {
+            if ( empty( $args['tax_query'] ) ) {
+                $args['tax_query'] = array();
+            }
+            $args['tax_query'][] = array(
+                array(
+                    'taxonomy' => 'product_cat',
+                    'terms'    => array_map( 'sanitize_title', explode( ',', $category ) ),
+                    'field'    => 'slug',
+                    'operator' => $operator,
+                ),
+            );
+        }
+
+        return $args;
     }
 
 
@@ -397,15 +533,19 @@ class Woocommerce_Upcoming_Product
      * @since 1.0
      */
     function wup_shop_page_view() {
-        if ( $this->is_upcoming() && WC_Admin_Settings::get_option( 'wup_price_hide', 'no' ) == 'yes' ) {
-            remove_action( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price', 10 );
-        } else if ( !$this->is_upcoming() && WC_Admin_Settings::get_option( 'wup_price_hide', 'no' ) == 'yes' ) {
-            add_action( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price', 10 );
+        if ( WC_Admin_Settings::get_option( 'wup_price_hide', 'no' ) == 'yes' ) {
+            if ( $this->is_upcoming() ) {
+                remove_action( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price', 10 );
+            } else if ( !$this->is_upcoming() ) {
+                add_action( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price', 10 );
+            }
         }
-        if ( $this->is_upcoming() && WC_Admin_Settings::get_option( 'wup_button_hide', 'no' ) == 'yes' ) {
-            remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10 );
-        } else if ( !$this->is_upcoming() && WC_Admin_Settings::get_option( 'wup_button_hide', 'no' ) == 'yes' ) {
-            add_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10 );
+        if ( WC_Admin_Settings::get_option( 'wup_button_hide', 'no' ) == 'yes' ) {
+            if ( $this->is_upcoming() ) {
+                remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10 );
+            } else if ( !$this->is_upcoming() ) {
+                add_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10 );
+            }
         }
     }
 
@@ -629,7 +769,7 @@ class Woocommerce_Upcoming_Product
                     array(
                         'title'=> __( 'Upcoming Product', 'wup' ),
                         'type' => 'title',
-                        'desc' => '',
+                        'desc' => __( 'To show your upcoming products, you can use <code>[upcoming_products]</code> shortcode with these attributes <code>per_page</code>, <code>columns</code>, <code>orderby</code>, <code>order</code>, <code>ids</code>, <code>skus</code> and <code>category</code>', 'wup' ),
                         'id'   => 'wup_options'
                     ),
 
