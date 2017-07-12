@@ -71,7 +71,12 @@ class Woocommerce_Upcoming_Product
         // Add upcoming option
         add_action( 'woocommerce_product_options_advanced', array( $this,'wup_add_upcoming_options' ), 10 );
         add_action( 'woocommerce_process_product_meta_simple', array( $this,'wup_save_upcoming_options' ), 10 );
+        add_action( 'woocommerce_process_product_meta_grouped', array( $this,'wup_save_upcoming_options' ), 10 );
+        add_action( 'woocommerce_process_product_meta_external', array( $this,'wup_save_upcoming_options' ), 10 );
         add_action( 'woocommerce_process_product_meta_variable', array( $this,'wup_save_upcoming_options' ), 10 );
+        add_action( 'woocommerce_process_product_meta_mix-and-match', array( $this,'wup_save_upcoming_options' ), 10 );
+
+        
         add_filter( 'woocommerce_add_to_cart_validation', array( $this,'wup_stop_adding_to_cart' ), 2, 10 );
 
         // image ribbon
