@@ -51,52 +51,54 @@ class Woocommerce_Upcoming_Product
      * @since  1.5.6
      */
     private function wup_init_hooks() {
-        register_activation_hook( __FILE__, array( $this,'activate' ) );
-        register_deactivation_hook( __FILE__, array( $this,'deactivate' ) );
+        register_activation_hook( __FILE__, array( $this, 'activate' ) );
+        register_deactivation_hook( __FILE__, array( $this, 'deactivate' ) );
 
         // Localize our plugin
-        add_action( 'init', array( $this,'localization_setup' ) );
-        add_action( 'init', array( $this,'wup_register_daily_upcoming_delete_event' ) );
+        add_action( 'init', array( $this, 'localization_setup' ) );
+        add_action( 'init', array( $this, 'wup_register_daily_upcoming_delete_event' ) );
 
         // Loads frontend scripts and styles
-        add_action( 'admin_enqueue_scripts', array( $this,'admin_enqueue_scripts' ) );
-        add_action( 'wp_enqueue_scripts', array( $this,'enqueue_scripts' ) );
+        add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+        add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 
 
         // wup let's play option
-        add_action( 'woocommerce_before_single_product', array( $this,'wup_single_page_view' ) );
+        add_action( 'woocommerce_before_single_product', array( $this, 'wup_single_page_view' ) );
         // wup let's play option
-        add_action( 'woocommerce_before_shop_loop_item', array( $this,'wup_shop_page_view' ) );
+        add_action( 'woocommerce_before_shop_loop_item', array( $this, 'wup_shop_page_view' ) );
 
         // Add upcoming option
-        add_action( 'woocommerce_product_options_advanced', array( $this,'wup_add_upcoming_options' ), 10 );
-        add_action( 'woocommerce_process_product_meta_simple', array( $this,'wup_save_upcoming_options' ), 10 );
-        add_action( 'woocommerce_process_product_meta_grouped', array( $this,'wup_save_upcoming_options' ), 10 );
-        add_action( 'woocommerce_process_product_meta_external', array( $this,'wup_save_upcoming_options' ), 10 );
-        add_action( 'woocommerce_process_product_meta_variable', array( $this,'wup_save_upcoming_options' ), 10 );
-        add_action( 'woocommerce_process_product_meta_mix-and-match', array( $this,'wup_save_upcoming_options' ), 10 );
+        add_action( 'woocommerce_product_options_advanced', array( $this, 'wup_add_upcoming_options' ), 10 );
+
+        add_action( 'woocommerce_process_product_meta_simple', array( $this, 'wup_save_upcoming_options' ), 10 );
+        add_action( 'woocommerce_process_product_meta_grouped', array( $this, 'wup_save_upcoming_options' ), 10 );
+        add_action( 'woocommerce_process_product_meta_external', array( $this, 'wup_save_upcoming_options' ), 10 );
+        add_action( 'woocommerce_process_product_meta_variable', array( $this, 'wup_save_upcoming_options' ), 10 );
+        add_action( 'woocommerce_process_product_meta_mix-and-match', array( $this, 'wup_save_upcoming_options' ), 10 );
+        add_action( 'woocommerce_process_product_meta_bundle', array( $this, 'wup_save_upcoming_options' ), 10 );
 
         
-        add_filter( 'woocommerce_add_to_cart_validation', array( $this,'wup_stop_adding_to_cart' ), 2, 10 );
+        add_filter( 'woocommerce_add_to_cart_validation', array( $this, 'wup_stop_adding_to_cart' ), 2, 10 );
 
         // image ribbon
-        add_filter( 'the_title', array( $this,'wup_upcoming_product_title' ), 2, 10 );
+        add_filter( 'the_title', array( $this, 'wup_upcoming_product_title' ), 2, 10 );
 
         // add search form option
-        add_filter( 'woocommerce_catalog_orderby', array( $this,'wup_upcoming_search_option' ) );
+        add_filter( 'woocommerce_catalog_orderby', array( $this, 'wup_upcoming_search_option' ) );
 
         // custom preorder search queary
-        add_action( 'woocommerce_product_query', array( $this,'wup_upcoming_custom_queary'), 2 );
+        add_action( 'woocommerce_product_query', array( $this, 'wup_upcoming_custom_queary'), 2 );
 
-        add_filter( 'woocommerce_single_product_summary', array( $this,'wup_custom_get_availability' ), 15 );
+        add_filter( 'woocommerce_single_product_summary', array( $this, 'wup_custom_get_availability' ), 15 );
 
         // pre order single product view
-        add_action( 'woocommerce_single_product_summary', array( $this,'wup_upcoming_single_page_view'), 30 );
-        add_action( 'woocommerce_after_shop_loop_item', array( $this,'wup_upcoming_shop_page_view'), 7 );
+        add_action( 'woocommerce_single_product_summary', array( $this, 'wup_upcoming_single_page_view'), 30 );
+        add_action( 'woocommerce_after_shop_loop_item', array( $this, 'wup_upcoming_shop_page_view'), 7 );
 
-        add_filter( 'woocommerce_get_sections_products', array( $this,'wup_wc_product_settings_section' ), 10 );
+        add_filter( 'woocommerce_get_sections_products', array( $this, 'wup_wc_product_settings_section' ), 10 );
 
-        add_filter( 'woocommerce_get_settings_products', array( $this,'wup_wc_product_settings_option' ), 10, 2 );
+        add_filter( 'woocommerce_get_settings_products', array( $this, 'wup_wc_product_settings_option' ), 10, 2 );
         add_action( 'wup_expired_upcoming_product', array( $this, 'wup_auto_delete_product_updoming_meta' ) );
 
         add_filter( 'plugin_action_links_' . WUP_PLUGIN_BASENAME, array( $this, 'wup_plugin_action_links' ) );

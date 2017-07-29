@@ -51,6 +51,7 @@ and Enjoy... :)
 = 1.5.7 =
 * [new] Add sshortcode [upcoming_products] to show upcoming products
 * [tweak] Format code and update product saving processing functionality
+* [tweak] Make compatible with grouped, external and mix-and-match product type
 * [fix] Upcoming product option on backend cannot uncheck
 
 = 1.5.6 =
