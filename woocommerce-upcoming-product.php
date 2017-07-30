@@ -256,13 +256,8 @@ class Woocommerce_Upcoming_Product
         $woocommerce_loop['columns'] = $columns;
         $woocommerce_loop['name']    = $loop_name;
         $query_args                  = apply_filters( 'woocommerce_shortcode_products_query', $query_args, $atts, $loop_name );
-        $transient_name              = 'wc_loop' . substr( md5( json_encode( $query_args ) . $loop_name ), 28 ) . WC_Cache_Helper::get_transient_version( 'product_query' );
-        $products                    = get_transient( $transient_name );
-
-        if ( false === $products || ! is_a( $products, 'WP_Query' ) ) {
-            $products = new WP_Query( $query_args );
-            set_transient( $transient_name, $products, DAY_IN_SECONDS * 30 );
-        }
+        
+        $products = new WP_Query( $query_args );
 
         ob_start();
 
