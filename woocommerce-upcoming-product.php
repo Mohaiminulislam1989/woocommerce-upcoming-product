@@ -208,7 +208,6 @@ class Woocommerce_Upcoming_Product
      * Define WC Constants.
      */
     private function wup_define_constants() {
-        $upload_dir = wp_upload_dir();
         $this->wup_define( 'WUP_PLUGIN_FILE', __FILE__ );
         $this->wup_define( 'WUP_ABSPATH', dirname( __FILE__ ) . '/' );
         $this->wup_define( 'WUP_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
@@ -249,7 +248,7 @@ class Woocommerce_Upcoming_Product
      * @param  string $loop_name
      * @return string
      */
-    private static function wup_product_loop( $query_args, $atts, $loop_name ) {
+    private function wup_product_loop( $query_args, $atts, $loop_name ) {
         global $woocommerce_loop;
 
         $columns                     = absint( $atts['columns'] );
@@ -299,7 +298,7 @@ class Woocommerce_Upcoming_Product
      * @param array $atts
      * @return string
      */
-    public static function wup_upcoming_products( $atts ) {
+    public function wup_upcoming_products( $atts ) {
         $atts = shortcode_atts( array(
             'per_page'  => '12',
             'columns'   => '4',
@@ -354,7 +353,7 @@ class Woocommerce_Upcoming_Product
      * @return array;
      * @access private
      */
-    private static function wup_maybe_add_category_args( $args, $category, $operator ) {
+    private function wup_maybe_add_category_args( $args, $category, $operator ) {
         if ( ! empty( $category ) ) {
             if ( empty( $args['tax_query'] ) ) {
                 $args['tax_query'] = array();
@@ -506,6 +505,9 @@ class Woocommerce_Upcoming_Product
      */
     function is_upcoming() {
         global $post;
+        if ( is_null( $post ) ) {
+            return;
+        }
         if ( get_post_meta( $post->ID, '_upcoming', true ) == 'yes' ) {
             return true;
         } else {
@@ -591,9 +593,9 @@ class Woocommerce_Upcoming_Product
      * return bool
      */
     function wup_stop_adding_to_cart( $chack, $product_id  ) {
-        if ( get_post_meta( $post->ID, '_upcoming', true ) != 'yes' ) {
+        if ( get_post_meta( $product_id, '_upcoming', true ) != 'yes' ) {
             return true;
-        } else if ( get_post_meta( $post->ID, '_upcoming', true ) != 'yes' && WC_Admin_Settings::get_option( 'wup_button_hide', 'no' ) == 'no' ) {
+        } else if ( get_post_meta( $product_id, '_upcoming', true ) != 'yes' && WC_Admin_Settings::get_option( 'wup_button_hide', 'no' ) == 'no' ) {
             return false;
         }
     }
