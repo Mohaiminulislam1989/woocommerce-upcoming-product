@@ -3,8 +3,8 @@ Contributors: sk.shaikat
 Tags: WooCommerce upcoming product, upcoming product, e-commerce, coming soon product, WooCommerce, extension, product, new product, dokan, wc-vendors, multivendor, marketplace, later product, stacked products, available from, offline products, advance product, processing product, advancement product, advertise product, advise product, pose product, pretend product, assert product, exert product, show off product, proclaim product, disseminate product, promulgate product, publish product, issue product, declare product, announce product, set forth product, set out product, notify product, advertising product, product on hold, onhold, onhold product, WC
 Donate link: https://www.paypal.me/skshaikat
 Requires at least: 3.1
-Tested up to: 4.8
-Stable tag: 1.5.7
+Tested up to: 4.8.1
+Stable tag: 1.5.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -47,6 +47,9 @@ and Enjoy... :)
 4. Upcoming product search option on shop page
 
 == Change log ==
+
+= 1.5.8 =
+* [fix] Fatal error: Can’t use function return value in write context
 
 = 1.5.7 =
 * [new] Add sshortcode [upcoming_products] to show upcoming products
