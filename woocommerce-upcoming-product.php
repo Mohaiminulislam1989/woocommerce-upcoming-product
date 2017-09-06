@@ -3,9 +3,9 @@
 Plugin Name: Woocommerce upcoming Products
 Plugin URI: https://github.com/Sk-Shaikat/woocommerce-upcoming-product
 Description: Best Plugin to Manage your upcoming product easily in WooCommerce.
-Version: 1.5.8
+Version: 1.5.8.1
 Author: Sk Shaikat
-Author URI: http://shaikat.me
+Author URI: https://www.facebook.com/skshaikat18
 Text Domain: wup
 Domain Path: /languages
 License: GPL2

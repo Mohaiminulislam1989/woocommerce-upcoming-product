@@ -4,7 +4,7 @@ Tags: WooCommerce upcoming product, upcoming product, e-commerce, coming soon pr
 Donate link: https://www.paypal.me/skshaikat
 Requires at least: 3.1
 Tested up to: 4.8.1
-Stable tag: 1.5.8
+Stable tag: 1.5.8.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -29,7 +29,7 @@ This plugin is coming with some awesome feature on its next update. Any suggesti
 
 Support: Please navigate to the support tab.
 
-Author:  [@Sk_Shaikat](http://shaikat.me)
+Author:  [@Sk_Shaikat](https://www.facebook.com/skshaikat18)
 
 == Installation ==
 
@@ -48,16 +48,19 @@ and Enjoy... :)
 
 == Change log ==
 
-= 1.5.8 =
+= 1.5.8.1 = Sep 06, 2017
+* [tweak] Some text and link update
+
+= 1.5.8 = Aug 31, 2017
 * [fix] Fatal error: Can’t use function return value in write context
 
-= 1.5.7 =
+= 1.5.7 = Jul 12, 2017
 * [new] Add sshortcode [upcoming_products] to show upcoming products
 * [tweak] Format code and update product saving processing functionality
 * [tweak] Make compatible with grouped, external and mix-and-match product type
 * [fix] Upcoming product option on backend cannot uncheck
 
-= 1.5.6 =
+= 1.5.6 = Jul 1, 2017
 * [new] Add settings to show available date as 'date' or 'duration'
 * [new] Add settings in plugin action link
 * [new] Remove some unnecessary settings options to manage easily
@@ -65,7 +68,7 @@ and Enjoy... :)
 * [tweak] Cron schedule update
 * [fix] Date available text issue fixed
 
-= 1.5.5 =
+= 1.5.5 = Jun 17, 2017
 * [new] Add settings to manage upcoming product auto live
 * [new] Add settings to manage available date level
 * [new] Add settings to manage text if available date not set
@@ -77,24 +80,24 @@ and Enjoy... :)
 * [fix] Add to cart and price duplicate on shop page issue
 * [fix] Stock management issue
 
-= 1.5.4 =
+= 1.5.4 = Apr 7, 2017
 * [tweak] Upcoming product which has no available date, will not go online
 * [tweak] No need to reactivate plugin to set cron
 
-= 1.5.3 =
+= 1.5.3 = Mar 29, 2017
 * [tweak] Set datepicker min-date to tomorrow date
 
-= 1.5.2 =
+= 1.5.2 = Mar 27, 2017
 * [fix] Added missing script to 'add new product' page
 * [fix] Not showing datepicker on add new product
 * [tweak] Set datepicker min-date to todays date
 
-= 1.5.1 =
+= 1.5.1 = Mar 25, 2017
 * [new] Add compatibility to work with 'Grouped product' type product
 * [tweak] Move upcoming checkbox from 'General' tab to 'Advanced' tab in product edit page
 * [tweak] Update screenshot
 
-= 1.5 =
+= 1.5 = Feb 18, 2017
 * [new] On available date Product will go online automatically with all data like stock, inventory
 * [new] Add admin style sheet
 * [tweak] Format all code
