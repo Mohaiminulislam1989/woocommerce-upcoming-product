@@ -4,7 +4,7 @@ Tags: WooCommerce upcoming product, upcoming product, e-commerce, coming soon pr
 Donate link: https://www.paypal.me/skshaikat
 Requires at least: 3.1
 Tested up to: 4.8.1
-Stable tag: 1.5.8.1
+Stable tag: 1.5.8.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -47,6 +47,9 @@ and Enjoy... :)
 4. Upcoming product search option on shop page
 
 == Change log ==
+
+= 1.5.8.2 = Oct 06, 2017
+* [tweak] Use filter 'wup_product_title_label' to show product title as you want.
 
 = 1.5.8.1 = Sep 06, 2017
 * [tweak] Some text and link update
