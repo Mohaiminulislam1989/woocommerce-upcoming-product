@@ -3,7 +3,7 @@
 Plugin Name: Woocommerce upcoming Products
 Plugin URI: https://github.com/Sk-Shaikat/woocommerce-upcoming-product
 Description: Best Plugin to Manage your upcoming product easily in WooCommerce.
-Version: 1.5.8.2
+Version: 1.5.8.4
 Author: Sk Shaikat
 Author URI: https://www.facebook.com/skshaikat18
 Text Domain: wup
@@ -78,7 +78,6 @@ class Woocommerce_Upcoming_Product
         add_action( 'woocommerce_process_product_meta_mix-and-match', array( $this, 'wup_save_upcoming_options' ), 10 );
         add_action( 'woocommerce_process_product_meta_bundle', array( $this, 'wup_save_upcoming_options' ), 10 );
 
-        
         add_filter( 'woocommerce_add_to_cart_validation', array( $this, 'wup_stop_adding_to_cart' ), 2, 10 );
 
         // image ribbon
@@ -106,6 +105,7 @@ class Woocommerce_Upcoming_Product
         add_shortcode( 'upcoming_products', array( $this, 'wup_upcoming_products' ) );
 
         // need subscription manager
+        // need some tweak in product display like coming soon date by nice duration clock.
     }
 
 
@@ -227,7 +227,7 @@ class Woocommerce_Upcoming_Product
 
     /**
      * Show action links on the plugin screen.
-     * 
+     *
      * @since 1.5.6
      *
      * @param   mixed $links Plugin Action links
@@ -255,7 +255,7 @@ class Woocommerce_Upcoming_Product
         $woocommerce_loop['columns'] = $columns;
         $woocommerce_loop['name']    = $loop_name;
         $query_args                  = apply_filters( 'woocommerce_shortcode_products_query', $query_args, $atts, $loop_name );
-        
+
         $products = new WP_Query( $query_args );
 
         ob_start();
@@ -381,12 +381,12 @@ class Woocommerce_Upcoming_Product
      * - with precision = 1 : 3 days
      * - with precision = 2 : 3 days, 4 hours
      * - with precision = 3 : 3 days, 4 hours, 12 minutes
-     * 
+     *
      * From: http://www.if-not-true-then-false.com/2010/php-calculate-real-differences-between-two-dates-or-timestamps/
      *
      * @param mixed $time1 a time (string or timestamp)
      * @param mixed $time2 a time (string or timestamp)
-     * @param integer $precision Optional precision 
+     * @param integer $precision Optional precision
      * @return string time difference
      */
     function wup_get_date_diff( $time1, $time2, $precision = 2 ) {
@@ -571,13 +571,13 @@ class Woocommerce_Upcoming_Product
      * Save upcoming meta of product
      *
      * @since 1.0
-     * 
+     *
      * @param int $post_id
      */
     function wup_save_upcoming_options( $post_id  ) {
         $_upcoming = isset( $_POST['_upcoming'] ) ? $_POST['_upcoming'] : '';
         $_available_on = ( isset( $_POST['_available_on'] ) ) ? wc_clean( $_POST['_available_on'] ) : '';
-        
+
         update_post_meta( $post_id, '_upcoming', $_upcoming );
         update_post_meta( $post_id, '_available_on', $_available_on );
     }
@@ -586,7 +586,7 @@ class Woocommerce_Upcoming_Product
      * Stop add to cart for upcoming product if button hide
      *
      * @since 1.5.5
-     * 
+     *
      * @param bool true
      * @param int $product_id
      *
@@ -641,7 +641,7 @@ class Woocommerce_Upcoming_Product
      * @since 1.0
      *
      * @param obj
-     * 
+     *
      * @return obj
      */
     function wup_upcoming_custom_queary( $q ) {
@@ -686,11 +686,12 @@ class Woocommerce_Upcoming_Product
                     <span class="available-from">
                         <strong>
                             <?php
-                            if ( !empty( WC_Admin_Settings::get_option( 'wup_availabel_date_lebel', 'Available from' ) ) ) {
-                                $available_date_text = WC_Admin_Settings::get_option( 'wup_availabel_date_lebel', 'Available from' ) . ': ';
+                            $available_date = WC_Admin_Settings::get_option( 'wup_availabel_date_lebel', 'Available from' );
+                            if ( !empty( $available_date ) ) {
+                                $available_date_text = $available_date . ': ';
                                 echo $available_date_text;
                             }
-                            if ( empty( $_available_on ) ) { 
+                            if ( empty( $_available_on ) ) {
                                 $not_available_date_text = WC_Admin_Settings::get_option( 'wup_not_availabel_date_text', 'Date not set yet' );
                                 echo $not_available_date_text;
                             }else {
@@ -699,7 +700,7 @@ class Woocommerce_Upcoming_Product
                                 } else if ( 'duration' == WC_Admin_Settings::get_option( 'wup_available_date_format', 'date' ) ) {
                                     echo $this->wup_get_date_diff( current_time('timestamp'), $_available_on );
                                 }
-                            } 
+                            }
                             ?>
                         </strong>
                     </span>
@@ -726,18 +727,20 @@ class Woocommerce_Upcoming_Product
                     <span class="available-from">
                         <strong>
                             <?php
-                            if ( !empty( WC_Admin_Settings::get_option( 'wup_availabel_date_lebel', 'Available from' ) ) ) {
-                                echo WC_Admin_Settings::get_option( 'wup_availabel_date_lebel', 'Available from' ) . ': ';
+                            $availabel_date_lebel = WC_Admin_Settings::get_option( 'wup_availabel_date_lebel', 'Available from' );
+                            $not_availabel_date_text = WC_Admin_Settings::get_option( 'wup_not_availabel_date_text', 'Date not set yet' );
+                            if ( !empty( $availabel_date_lebel ) ) {
+                                echo $availabel_date_lebel . ': ';
                             }
-                            if ( empty( $_available_on ) ) { 
-                                echo WC_Admin_Settings::get_option( 'wup_not_availabel_date_text', 'Date not set yet' );
+                            if ( empty( $_available_on ) ) {
+                                echo not_availabel_date_text;
                             }else {
                                 if ( 'date' == WC_Admin_Settings::get_option( 'wup_available_date_format', 'date' ) ) {
                                     echo date_i18n( get_option( 'date_format' ), strtotime( $_available_on ) );
                                 } else if ( 'duration' == WC_Admin_Settings::get_option( 'wup_available_date_format', 'date' ) ) {
                                     echo $this->wup_get_date_diff( current_time('timestamp'), $_available_on );
                                 }
-                            } 
+                            }
                             ?>
                         </strong>
                     </span>

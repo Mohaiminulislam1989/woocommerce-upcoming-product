@@ -3,8 +3,8 @@ Contributors: sk.shaikat
 Tags: WooCommerce upcoming product, upcoming product, e-commerce, coming soon product, WooCommerce, extension, product, new product, dokan, wc-vendors, multivendor, marketplace, later product, stacked products, available from, offline products, advance product, processing product, advancement product, advertise product, advise product, pose product, pretend product, assert product, exert product, show off product, proclaim product, disseminate product, promulgate product, publish product, issue product, declare product, announce product, set forth product, set out product, notify product, advertising product, product on hold, onhold, onhold product, WC
 Donate link: https://www.paypal.me/skshaikat
 Requires at least: 3.1
-Tested up to: 4.8.1
-Stable tag: 1.5.8.2
+Tested up to: 4.9
+Stable tag: 1.5.8.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -17,7 +17,7 @@ Manage your all type of upcoming product easily. Support product type: Simple Pr
 * Manage Upcoming label
 * Hide / Show add to cart button for upcoming product
 * Hide / Show Upcoming product price
-* Short by upcoming on shop page
+* Sort by upcoming on shop page
 * Set product available date
 * Show / Hide Available date
 * Auto restock and auto live product on available date
@@ -47,6 +47,13 @@ and Enjoy... :)
 4. Upcoming product search option on shop page
 
 == Change log ==
+
+= 1.5.8.3 = Nov 18, 2017
+* [fix] Fix some fatal error due to lower version of php 5.5
+
+= 1.5.8.3 = Nov 12, 2017
+* [fix] write context error for php version fix
+* [tweak] Some text and link update
 
 = 1.5.8.2 = Oct 06, 2017
 * [tweak] Use filter 'wup_product_title_label' to show product title as you want.
