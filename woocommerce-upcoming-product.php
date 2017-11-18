@@ -3,7 +3,7 @@
 Plugin Name: Woocommerce upcoming Products
 Plugin URI: https://github.com/Sk-Shaikat/woocommerce-upcoming-product
 Description: Best Plugin to Manage your upcoming product easily in WooCommerce.
-Version: 1.5.8.4
+Version: 1.5.8.5
 Author: Sk Shaikat
 Author URI: https://www.facebook.com/skshaikat18
 Text Domain: wup
@@ -78,7 +78,7 @@ class Woocommerce_Upcoming_Product
         add_action( 'woocommerce_process_product_meta_mix-and-match', array( $this, 'wup_save_upcoming_options' ), 10 );
         add_action( 'woocommerce_process_product_meta_bundle', array( $this, 'wup_save_upcoming_options' ), 10 );
 
-        add_filter( 'woocommerce_add_to_cart_validation', array( $this, 'wup_stop_adding_to_cart' ), 2, 10 );
+        // add_filter( 'woocommerce_add_to_cart_validation', array( $this, 'wup_stop_adding_to_cart' ), 3, 10 );
 
         // image ribbon
         add_filter( 'the_title', array( $this, 'wup_upcoming_product_title' ), 2, 10 );
@@ -592,11 +592,12 @@ class Woocommerce_Upcoming_Product
      *
      * return bool
      */
-    function wup_stop_adding_to_cart( $chack, $product_id  ) {
-        if ( get_post_meta( $product_id, '_upcoming', true ) != 'yes' ) {
-            return true;
-        } else if ( get_post_meta( $product_id, '_upcoming', true ) != 'yes' && WC_Admin_Settings::get_option( 'wup_button_hide', 'no' ) == 'no' ) {
-            return false;
+    function wup_stop_adding_to_cart( $chack, $product_id, $quantity ) {
+        $button_hide = WC_Admin_Settings::get_option( 'wup_button_hide', 'no' );
+        if ( $button_hide != 'no' ) {
+            if ( get_post_meta( $product_id, '_upcoming', true ) != 'yes' ) {
+                return false;
+            }
         }
     }
 
