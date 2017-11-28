@@ -3,7 +3,7 @@
 Plugin Name: Woocommerce upcoming Products
 Plugin URI: https://github.com/Sk-Shaikat/woocommerce-upcoming-product
 Description: Best Plugin to Manage your upcoming product easily in WooCommerce.
-Version: 1.5.8.5
+Version: 1.5.8.6
 Author: Sk Shaikat
 Author URI: https://www.facebook.com/skshaikat18
 Text Domain: wup
@@ -724,7 +724,7 @@ class Woocommerce_Upcoming_Product
         if ( $this->is_upcoming() ) {
             if ( WC_Admin_Settings::get_option( 'wup_show_available_date', 'yes' ) == 'yes' ) {
                 $_available_on = get_post_meta( $post->ID, '_available_on', true ); ?>
-                <div class="price">
+                <div class="available">
                     <span class="available-from">
                         <strong>
                             <?php
@@ -734,7 +734,7 @@ class Woocommerce_Upcoming_Product
                                 echo $availabel_date_lebel . ': ';
                             }
                             if ( empty( $_available_on ) ) {
-                                echo not_availabel_date_text;
+                                echo $not_availabel_date_text;
                             }else {
                                 if ( 'date' == WC_Admin_Settings::get_option( 'wup_available_date_format', 'date' ) ) {
                                     echo date_i18n( get_option( 'date_format' ), strtotime( $_available_on ) );

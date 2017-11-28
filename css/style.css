@@ -1,1 +1,8 @@
 /*Upcoming product style*/
+.woocommerce ul.products li.product .available {
+    color: #77a464;
+    display: block;
+    font-weight: 400;
+    margin-bottom: .5em;
+    font-size: .857em;
+}

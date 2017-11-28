@@ -4,7 +4,7 @@ Tags: WooCommerce upcoming product, upcoming product, e-commerce, coming soon pr
 Donate link: https://www.paypal.me/skshaikat
 Requires at least: 3.1
 Tested up to: 4.9
-Stable tag: 1.5.8.5
+Stable tag: 1.5.8.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -48,10 +48,16 @@ and Enjoy... :)
 
 == Change log ==
 
-= 1.5.8.3 = Nov 18, 2017
+= 1.5.8.6 = Nov 28, 2017
+* [fix] Text showing error
+* [fix] Fatal error on activation
+* [fix] Trusted theme conflict
+* [fix] Title level issue
+
+= 1.5.8.5 = Nov 18, 2017
 * [fix] Add to cart not working
 
-= 1.5.8.3 = Nov 18, 2017
+= 1.5.8.4 = Nov 18, 2017
 * [fix] Fix some fatal error due to lower version of php 5.5
 
 = 1.5.8.3 = Nov 12, 2017
