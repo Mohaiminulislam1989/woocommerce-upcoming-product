@@ -3,8 +3,8 @@ Contributors: sk.shaikat
 Tags: WooCommerce upcoming product, upcoming product, e-commerce, coming soon product, WooCommerce, extension, product, new product, dokan, wc-vendors, multivendor, marketplace, later product, stacked products, available from, offline products, advance product, processing product, advancement product, advertise product, advise product, pose product, pretend product, assert product, exert product, show off product, proclaim product, disseminate product, promulgate product, publish product, issue product, declare product, announce product, set forth product, set out product, notify product, advertising product, product on hold, onhold, onhold product, WC
 Donate link: https://www.paypal.me/skshaikat
 Requires at least: 3.1
-Tested up to: 4.9
-Stable tag: 1.5.8.6
+Tested up to: 5
+Stable tag: 1.5.8.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -29,7 +29,7 @@ This plugin is coming with some awesome feature on its next update. Any suggesti
 
 Support: Please navigate to the support tab.
 
-Author:  [@Sk_Shaikat](https://www.facebook.com/skshaikat18)
+Author:  [@Sk_Shaikat](http://www.shaikat.me)
 
 == Installation ==
 
@@ -47,6 +47,10 @@ and Enjoy... :)
 4. Upcoming product search option on shop page
 
 == Change log ==
+
+= 1.5.8.7 = Dec 31, 2017
+* [tweak] Show warning if WooCommerce not active
+* [fix] Fatal error if WooCommerce not active
 
 = 1.5.8.6 = Nov 28, 2017
 * [fix] Text showing error

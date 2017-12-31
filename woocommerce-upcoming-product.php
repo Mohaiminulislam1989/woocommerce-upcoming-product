@@ -3,7 +3,7 @@
 Plugin Name: Woocommerce upcoming Products
 Plugin URI: https://github.com/Sk-Shaikat/woocommerce-upcoming-product
 Description: Best Plugin to Manage your upcoming product easily in WooCommerce.
-Version: 1.5.8.6
+Version: 1.5.8.7
 Author: Sk Shaikat
 Author URI: http://www.shaikat.me
 Text Domain: wup
@@ -38,8 +38,7 @@ class Woocommerce_Upcoming_Product
      * @uses is_admin()
      * @uses add_action()
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->wup_define_constants();
         $this->wup_init_hooks();
 
@@ -118,6 +117,9 @@ class Woocommerce_Upcoming_Product
     public static function init() {
         // Before init action.
         do_action( 'before_wup_init' );
+        if ( !class_exists( 'WC_Admin_Settings' ) ) {
+            return;
+        }
         static $instance = false;
 
         if ( ! $instance ) {
@@ -132,8 +134,13 @@ class Woocommerce_Upcoming_Product
      *
      * Nothing being called here yet.
      */
-    public function activate()
-    {
+    public function activate() {
+        if ( ! function_exists( 'WC' ) ) {
+            require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+            deactivate_plugins( plugin_basename( __FILE__ ) );
+
+            wp_die( '<div class="error"><p>' . sprintf( __( '<b>Dokan</b> requires %sWooCommerce%s to be installed & activated!', 'dokan-lite' ), '<a target="_blank" href="https://wordpress.org/plugins/woocommerce/">', '</a>' ) . '</p></div>' );
+        }
         if (! wp_next_scheduled ( 'wup_expired_upcoming_product' ) ) {
             wp_schedule_event( time(), 'twicedaily', 'wup_expired_upcoming_product' );
         }
@@ -693,7 +700,7 @@ class Woocommerce_Upcoming_Product
                                 echo $available_date_text;
                             }
                             if ( empty( $_available_on ) ) {
-                                $not_available_date_text = WC_Admin_Settings::get_option( 'wup_not_availabel_date_text', 'Date not set yet' );
+                                $not_available_date_text = WC_Admin_Settings::get_option( 'wup_not_availabel_date_text', 'Date not yet set' );
                                 echo $not_available_date_text;
                             }else {
                                 if ( 'date' == WC_Admin_Settings::get_option( 'wup_available_date_format', 'date' ) ) {
